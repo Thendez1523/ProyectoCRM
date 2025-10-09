@@ -7,8 +7,7 @@ package formularios;
 import clases.Cliente;
 import clases.llamadas;
 import formularios.HistorialLlamadas;
-import formularios.HistorialLlamadas;
-import formularios.HistorialLlamadas;
+import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,6 +19,7 @@ public class Llamadas extends javax.swing.JFrame {
     /**
      * Creates new form Llamadas
      */
+    //aqui me muestra el combo box con los clientes
     public Llamadas() {
         initComponents();
         
@@ -59,8 +59,10 @@ public class Llamadas extends javax.swing.JFrame {
         jButton6 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jComboBoxCodigoCliente = new javax.swing.JComboBox<>();
-        jComboBoxCodigoEmpleado = new javax.swing.JComboBox<>();
         jLabelNombreCliente = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jTextFieldCEmpleado = new javax.swing.JTextField();
+        jTextFieldDuracion1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nueva Llamada");
@@ -134,7 +136,19 @@ public class Llamadas extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxCodigoEmpleado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel9.setText("Duracion (por el momento):");
+
+        jTextFieldCEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldCEmpleadoActionPerformed(evt);
+            }
+        });
+
+        jTextFieldDuracion1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldDuracion1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,22 +176,24 @@ public class Llamadas extends javax.swing.JFrame {
                                     .addComponent(jLabel8)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel5)
-                                    .addComponent(jLabel4))
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel9))
                                 .addGap(94, 94, 94)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(jLabelNombreCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jComboBoxTipo, javax.swing.GroupLayout.Alignment.LEADING, 0, 129, Short.MAX_VALUE)
-                                        .addComponent(jComboBoxCodigoCliente, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jComboBoxCodigoEmpleado, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                        .addComponent(jComboBoxCodigoCliente, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jTextFieldCEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextFieldDuracion1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(203, 203, 203)
                         .addComponent(jButton5))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(138, 138, 138)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,28 +208,29 @@ public class Llamadas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jLabelNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBoxCodigoEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton3)
-                            .addComponent(jButton2)
-                            .addComponent(jButton4)
-                            .addComponent(jButton6)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel8)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jTextFieldDuracion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3)
+                    .addComponent(jButton2)
+                    .addComponent(jButton4)
+                    .addComponent(jButton6))
                 .addGap(18, 18, 18)
                 .addComponent(jButton5)
                 .addGap(23, 23, 23))
@@ -236,18 +253,59 @@ public class Llamadas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try{
-            llamadas ll = new llamadas();
-            ll.setTipo(jComboBoxTipo.getSelectedItem().toString());
-            ll.setNota(jTextAreanota.getText());
-            
-        } catch (Exception ex) {
-            System.out.println("Error" + ex.getMessage());
-            JOptionPane.showMessageDialog(this,
-                    "Error al guardar: " + ex.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+
+        //boton donde almaceno todo lo que inserte en el formulario 
+    try {
+        
+        llamadas nuevaLlamada = new llamadas();
+
+String itemCompleto = jComboBoxCodigoCliente.getSelectedItem().toString();
+int indiceGuion = itemCompleto.indexOf('-');
+
+if (indiceGuion > 0) {
+    
+    String codigoClienteStr = itemCompleto.substring(0, indiceGuion).trim(); 
+    nuevaLlamada.setCodigo_cliente(Integer.parseInt(codigoClienteStr));
+} else {
+    
+    throw new NumberFormatException("El formato del código de cliente no es válido.");
+}
+
+        nuevaLlamada.setNombre_cliente(jLabelNombreCliente.getText());
+
+        String codigoEmpleadoStr = jTextFieldCEmpleado.getText();
+        nuevaLlamada.setCodigo_empleado(Integer.parseInt(codigoEmpleadoStr));
+
+        nuevaLlamada.setTipo(jComboBoxTipo.getSelectedItem().toString());
+
+        nuevaLlamada.setNota(jTextAreanota.getText());
+
+        String duracionStr = jTextFieldDuracion1.getText();
+        nuevaLlamada.setDuracion(Integer.parseInt(duracionStr));
+        
+        nuevaLlamada.setFecha_hora(LocalDateTime.now());
+        
+        llamadas ll = new llamadas(); 
+        ll.GuardarLLamada(nuevaLlamada);
+
+        JOptionPane.showMessageDialog(this, "Llamada registrada exitosamente.", "Guardado Exitoso", JOptionPane.INFORMATION_MESSAGE);
+        
+
+    } catch (NumberFormatException e) {
+
+        System.out.println("Error de formato numérico: " + e.getMessage());
+        JOptionPane.showMessageDialog(this,
+            "Error: Asegúrese de que todos los códigos y la duración sean números válidos.",
+            "Error de Formato",
+            JOptionPane.ERROR_MESSAGE);
+    } catch (Exception ex) {
+
+        System.out.println("Error al guardar llamada: " + ex.getMessage());
+        JOptionPane.showMessageDialog(this,
+            "Error al guardar la llamada: " + ex.getMessage(),
+            "Error al Guardar",
+            JOptionPane.ERROR_MESSAGE);
+    }
 
 
 
@@ -265,6 +323,14 @@ public class Llamadas extends javax.swing.JFrame {
     private void jComboBoxCodigoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCodigoClienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxCodigoClienteActionPerformed
+
+    private void jTextFieldCEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCEmpleadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldCEmpleadoActionPerformed
+
+    private void jTextFieldDuracion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDuracion1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldDuracion1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -309,7 +375,6 @@ public class Llamadas extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<Cliente> jComboBoxCodigoCliente;
-    private javax.swing.JComboBox<String> jComboBoxCodigoEmpleado;
     private javax.swing.JComboBox<String> jComboBoxTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -317,8 +382,11 @@ public class Llamadas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelNombreCliente;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextAreanota;
+    private javax.swing.JTextField jTextFieldCEmpleado;
+    private javax.swing.JTextField jTextFieldDuracion1;
     // End of variables declaration//GEN-END:variables
 }

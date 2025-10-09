@@ -395,11 +395,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemEstadoVentasActionPerformed
 
     private void jMenuItemIniciarLLamadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemIniciarLLamadaActionPerformed
+
+       Llamadas l= new Llamadas();
+        l.setVisible(true); 
         
     }//GEN-LAST:event_jMenuItemIniciarLLamadaActionPerformed
 
     private void jMenuItemHistorialLlamadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistorialLlamadasActionPerformed
-       
+
+       HistorialLlamadas hl= new HistorialLlamadas();
+        hl.setVisible(true);
+        
     }//GEN-LAST:event_jMenuItemHistorialLlamadasActionPerformed
 
     private void jMenuItemRegistroClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRegistroClienteActionPerformed
