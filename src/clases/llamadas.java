@@ -187,10 +187,10 @@ public DefaultTableModel TablaLlamadas() {
 
     } catch (SQLException e) {
    
-        System.err.println("¡ERROR FATAL DE BD AL CARGAR LA TABLA!");
+        System.err.println("Error al cargar la tabla");
         System.err.println("Mensaje: " + e.getMessage());
-        e.printStackTrace(); 
-        // Si hay un error, devuelve el modelo vacío.
+        
+       
         return new DefaultTableModel(null, nombresColumnas);
     }
     

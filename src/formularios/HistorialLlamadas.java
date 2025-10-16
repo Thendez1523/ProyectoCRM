@@ -28,8 +28,8 @@ public class HistorialLlamadas extends javax.swing.JFrame {
             
         } catch (Exception e) {
             
-            System.err.println("Error fatal al cargar el historial: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error al cargar el historial de llamadas: " + e.getMessage());
+            
         }
     }
     
