@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Pucho-PC/Desktop/nueva/ProyectoCRM/src/formularios/MenuPrincipal.java</file>
-            <file>file:/C:/Users/Pucho-PC/Desktop/nueva/ProyectoCRM/src/formularios/Empleados.java</file>
+            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/clases/Cliente.java</file>
+            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/formularios/ActualizarClientes.java</file>
+            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/formularios/VisualizarClientes.java</file>
+            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/clases/ConexionBD.java</file>
         </group>
     </open-files>
 </project-private>

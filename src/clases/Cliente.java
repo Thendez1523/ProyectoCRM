@@ -1,93 +1,52 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package clases;
 
-import clases.ConexionBD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
-
+import java.sql.ResultSet;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import java.sql.ResultSet;
 
-/**
- *
- * @author MarcosCano
- */
 public class Cliente extends Persona {
 
-    /**
-     * @param codigoCliente the codigoCliente to set
-     */
-    public void setCodigoCliente(int codigoCliente) {
-        this.codigoCliente = codigoCliente;
-    }
-
-    /**
-     * @return the codigoCliente
-     */
-    public int getCodigoCliente() {
-        return codigoCliente;
-    }
     private Date fechaRegistro;
     private String tipoCliente;
     private String nit;
     private int codigoCliente;
 
-    // ✅ Constructor vacío
+    // ================= CONSTRUCTORES =================
     public Cliente() {}
 
-    // ✅ Constructor para usar en JComboBox
     public Cliente(int codigoCliente, String nombreCompleto, String telefono, String correo, String direccion) {
-        this.setCodigoCliente(codigoCliente);
+        this.codigoCliente = codigoCliente;
         this.setNombre(nombreCompleto);
         this.setTelefono(telefono);
         this.setCorreo(correo);
         this.setDireccion(direccion);
     }
 
-    // ✅ Mostrar nombre en JComboBox
+    // ================= GETTERS Y SETTERS =================
+    public int getCodigoCliente() { return codigoCliente; }
+    public void setCodigoCliente(int codigoCliente) { this.codigoCliente = codigoCliente; }
+    public Date getFechaRegistro() { return fechaRegistro; }
+    public void setFechaRegistro(Date fechaRegistro) { this.fechaRegistro = fechaRegistro; }
+    public String getTipoCliente() { return tipoCliente; }
+    public void setTipoCliente(String tipoCliente) { this.tipoCliente = tipoCliente; }
+    public String getNit() { return nit; }
+    public void setNit(String nit) { this.nit = nit; }
+
     @Override
     public String toString() {
-        return getCodigoCliente() + " - " + getNombre();
+        return codigoCliente + " - " + getNombre();
     }
 
-    // ================= GETTERS Y SETTERS ================= //
+    // ================= MÉTODOS =================
 
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public String getTipoCliente() {
-        return tipoCliente;
-    }
-
-    public void setTipoCliente(String tipoCliente) {
-        this.tipoCliente = tipoCliente;
-    }
-
-    public String getNit() {
-        return nit;
-    }
-
-    public void setNit(String nit) {
-        this.nit = nit;
-    }
-
-    // ================= MÉTODOS ================= //
-
-    //CREAR CLIENTE
+    // ✅ Crear cliente
     public void CrearCliente(Cliente cliente) {
         String mensaje = "¿Desea guardar este cliente con los siguientes datos?\n\n"
                 + "Nombre: " + cliente.getNombre() + "\n"
@@ -102,18 +61,12 @@ public class Cliente extends Persona {
                 + "Tipo Cliente: " + cliente.getTipoCliente() + "\n"
                 + "Fecha Registro: " + cliente.getFechaRegistro();
 
-        int opcion = JOptionPane.showConfirmDialog(
-                null,
-                mensaje,
-                "Confirmar registro de cliente",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE
-        );
+        int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Confirmar registro de cliente",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (opcion == JOptionPane.YES_OPTION) {
             String sql = "INSERT INTO cliente (nombre, apellido, nit, dpi, correo, telefono, direccion, fechaNacimiento, edad, tipoCliente, fechaRegistro) "
                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
             try (Connection cx = ConexionBD.getInstancia().conectar();
                  PreparedStatement ps = cx.prepareStatement(sql)) {
 
@@ -130,13 +83,7 @@ public class Cliente extends Persona {
                 ps.setDate(11, new java.sql.Date(cliente.getFechaRegistro().getTime()));
 
                 ps.executeUpdate();
-
-                
-                    JOptionPane.showMessageDialog(null,
-                        "✅ Cliente registrado con éxito.",
-                        "Información",
-                        JOptionPane.INFORMATION_MESSAGE);
-                
+                JOptionPane.showMessageDialog(null, "✅ Cliente registrado con éxito.");
 
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "❌ Error al registrar cliente: " + ex.getMessage());
@@ -146,38 +93,118 @@ public class Cliente extends Persona {
         }
     }
 
-    public void actualizarCliente(Cliente cliente) {
-        // Aquí implementas el UPDATE más adelante
+    // ✅ Llenar ComboBox con clientes (código + nombre)
+    public static void comboCliente(JComboBox<Cliente> comboBox) {
+        DefaultComboBoxModel<Cliente> model = new DefaultComboBoxModel<>();
+        String sql = "SELECT codigoCliente, CONCAT(nombre, ' ', apellido) AS nombreCompleto, telefono, correo, direccion FROM cliente ORDER BY nombre ASC";
+
+        Connection cx = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            cx = ConexionBD.getInstancia().conectar();
+            ps = cx.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Cliente c = new Cliente(
+                        rs.getInt("codigoCliente"),
+                        rs.getString("nombreCompleto"),
+                        rs.getString("telefono"),
+                        rs.getString("correo"),
+                        rs.getString("direccion")
+                );
+                model.addElement(c);
+            }
+            comboBox.setModel(model);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "❌ Error al llenar combo de clientes: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (cx != null) cx.close();
+            } catch (SQLException e) {
+                System.out.println("⚠ Error al cerrar conexión: " + e.getMessage());
+            }
+        }
     }
 
-    
+    // ✅ Actualizar cliente
+    public void actualizarCliente(Cliente cliente) {
+        String mensaje = "¿Desea actualizar este cliente con los siguientes datos?\n\n"
+                + "Código: " + cliente.getCodigoCliente() + "\n"
+                + "Nombre: " + cliente.getNombre() + "\n"
+                + "Apellido: " + cliente.getApellido() + "\n"
+                + "NIT: " + cliente.getNit() + "\n"
+                + "Correo: " + cliente.getCorreo() + "\n"
+                + "Teléfono: " + cliente.getTelefono() + "\n"
+                + "Dirección: " + cliente.getDireccion() + "\n"
+                + "Tipo Cliente: " + cliente.getTipoCliente();
 
-    // ✅ Método para llenar ComboBox con Clientes
-   public static void comboCliente(JComboBox<Cliente> comboBox) {
-        DefaultComboBoxModel<Cliente> model = new DefaultComboBoxModel<>();
-        String sql = "SELECT codigoCliente, CONCAT(nombre, ' ', apellido) AS nombreCompleto, telefono, correo, direccion "
-                   + "FROM cliente ORDER BY nombre ASC";
+        int opcion = JOptionPane.showConfirmDialog(null, mensaje, "Confirmar actualización de cliente",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            String sql = "UPDATE cliente SET nombre = ?, apellido = ?, nit = ?, correo = ?, telefono = ?, direccion = ?, tipoCliente = ? WHERE codigoCliente = ?";
+            try (Connection cx = ConexionBD.getInstancia().conectar();
+                 PreparedStatement ps = cx.prepareStatement(sql)) {
+
+                ps.setString(1, cliente.getNombre());
+                ps.setString(2, cliente.getApellido());
+                ps.setString(3, cliente.getNit());
+                ps.setString(4, cliente.getCorreo());
+                ps.setString(5, cliente.getTelefono());
+                ps.setString(6, cliente.getDireccion());
+                ps.setString(7, cliente.getTipoCliente());
+                ps.setInt(8, cliente.getCodigoCliente());
+                int filas = ps.executeUpdate();
+
+                if (filas > 0) {
+                    JOptionPane.showMessageDialog(null, "✅ Cliente actualizado correctamente.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "⚠ No se encontró el cliente a actualizar.");
+                }
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "❌ Error al actualizar cliente: " + ex.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "❌ Actualización cancelada.");
+        }
+    }
+
+    // ✅ Mostrar clientes en JTable
+    public void mostrarCliente(JTable tabla) {
+        String[] columnas = {"nit", "codigoCliente", "nombre", "apellido", "direccion", "telefono", "correo", "tipoCliente"};
+        DefaultTableModel modelo = new DefaultTableModel(null, columnas) {
+            @Override public boolean isCellEditable(int row, int column) { return false; }
+        };
+
+        String sql = "SELECT nit, codigoCliente, nombre, apellido, direccion, telefono, correo, tipoCliente FROM cliente";
 
         try (Connection cx = ConexionBD.getInstancia().conectar();
              PreparedStatement ps = cx.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                int codigo = rs.getInt("codigoCliente");
-                String nombre = rs.getString("nombreCompleto");
-                String telefono = rs.getString("telefono");
-                String correo = rs.getString("correo");
-                String direccion = rs.getString("direccion");
-
-                Cliente cliente = new Cliente(codigo, nombre, telefono, correo, direccion);
-                model.addElement(cliente);
+                modelo.addRow(new Object[]{
+                    rs.getString("nit"),
+                    rs.getInt("codigoCliente"),
+                    rs.getString("nombre"),
+                    rs.getString("apellido"),
+                    rs.getString("direccion"),
+                    rs.getString("telefono"),
+                    rs.getString("correo"),
+                    rs.getString("tipoCliente")
+                });
             }
 
-            comboBox.setModel(model);
-
+            tabla.setModel(modelo);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "❌ Error al mostrar clientes: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "❌ Error al cargar clientes: " + ex.getMessage());
         }
     }
-
 }
