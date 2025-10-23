@@ -444,6 +444,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemVisualizarEmpleadosActionPerformed
 
     private void jMenuItemAgregarProductoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarProductoServicioActionPerformed
+
+        ProductoServicio ps= new ProductoServicio();
+        ps.setVisible(true);
         
     }//GEN-LAST:event_jMenuItemAgregarProductoServicioActionPerformed
 
@@ -458,8 +461,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCancelarServicioActionPerformed
 
     private void jMenuItemVisualizarServiciosVigentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVisualizarServiciosVigentesActionPerformed
-        VisualizarServiciosVigentes vsv= new VisualizarServiciosVigentes();
-        vsv.setVisible(true);
+
+        
+        
     }//GEN-LAST:event_jMenuItemVisualizarServiciosVigentesActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -467,8 +471,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItemVisualizarProductoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVisualizarProductoServicioActionPerformed
-        VisualizarServiciosVigentes vsv= new VisualizarServiciosVigentes();
-        vsv.setVisible(true);
+
+        
     }//GEN-LAST:event_jMenuItemVisualizarProductoServicioActionPerformed
 
     private void jMenuItemCrearReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearReporteActionPerformed

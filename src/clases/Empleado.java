@@ -1,227 +1,148 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package clases;
+
 import clases.ConexionBD;
 import clases.ConexionBD;
 import clases.Persona;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Time;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
 
-/**
- *
- * @author Pucho-PC
- */
 public class Empleado extends Persona {
-    
-    private double salario;
     private String departamento;
     private String puesto;
-    private String horaing;
-    private String horaeg;
-    private String estado;
-    
+    private double salario;
+    private Time horaEntrada;
+    private Time horaSalida;
 
-    /**
-     * @return the salario
-     */
-    public double getSalario() {
-        return salario;
-    }
 
-    /**
-     * @param salario the salario to set
-     */
-    public void setSalario(double salario) {
-        this.salario = salario;
-    }
+    public Empleado() {}
 
-    /**
-     * @return the departamento
-     */
+
     public String getDepartamento() {
         return departamento;
     }
 
-    /**
-     * @param departamento the departamento to set
-     */
     public void setDepartamento(String departamento) {
         this.departamento = departamento;
     }
 
-    /**
-     * @return the puesto
-     */
     public String getPuesto() {
         return puesto;
     }
 
-    /**
-     * @param puesto the puesto to set
-     */
     public void setPuesto(String puesto) {
         this.puesto = puesto;
     }
 
-    /**
-     * @return the horaing
-     */
-    public String getHoraing() {
-        return horaing;
+    public double getSalario() {
+        return salario;
     }
 
-    /**
-     * @param horaing the horaing to set
-     */
-    public void setHoraing(String horaing) {
-        this.horaing = horaing;
+    public void setSalario(double salario) {
+        this.salario = salario;
     }
 
-    /**
-     * @return the horaeg
-     */
-    public String getHoraeg() {
-        return horaeg;
+    public Time getHoraEntrada() {
+        return horaEntrada;
     }
 
-    /**
-     * @param horaeg the horaeg to set
-     */
-    public void setHoraeg(String horaeg) {
-        this.horaeg = horaeg;
+    public void setHoraEntrada(Time horaEntrada) {
+        this.horaEntrada = horaEntrada;
     }
 
-    /**
-     * @return the estado
-     */
-    public String getEstado() {
-        return estado;
+    public Time getHoraSalida() {
+        return horaSalida;
     }
 
-    /**
-     * @param estado the estado to set
-     */
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setHoraSalida(Time horaSalida) {
+        this.horaSalida = horaSalida;
     }
-  public void CrearEmpleado (Empleado empleado) 
-  {
-      String mensaje = "¿Desea guardar este cliente con los siguientes datos?\n\n"
-            + "Nombre: " + empleado.getNombre() + "\n"
-            + "Apellido: " + empleado.getApellido() + "\n"
-            + "DPI: " + empleado.getDpi() + "\n"
-            + "Correo: " + empleado.getCorreo() + "\n"
-            + "Teléfono: " + empleado.getTelefono() + "\n"
-            + "Dirección: " + empleado.getDireccion() + "\n"
-            + "Fecha Nacimiento: " + empleado.getFechaNac() + "\n"
-            + "Edad: " + empleado.getEdad() + "\n"
-            + "Salario: " + empleado.getSalario() + "\n"
-            + "Departamento: " + empleado.getDepartamento() + "\n"
-            + "Hora de Entrada: " + empleado.getHoraing() + "\n"
-            + "Hora de Egreso: " + empleado.getHoraeg() + "\n"
-            + "Estado: " + empleado.getEstado() + "\n"
-            + "Puesto: " + empleado.getPuesto() + "\n"
-            + "Fecha Registro: " + empleado.getFechaRegistro();
 
-    int opcion = JOptionPane.showConfirmDialog(
-            null,
-            mensaje,
-            "Confirmar registro de cliente",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE
-    );
 
-    if (opcion == JOptionPane.YES_OPTION) {
-        String sql = "INSERT INTO empleados (nombre, apellido, dpi, correo, telefono, direccion, fechaNacimiento, edad, salario, departamento, horaentrada, horasalida, estado, puesto, fechaRegistro) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public void CrearEmpleado(Empleado empleado) {
+        String sql = "INSERT INTO empleados (nombre, apellido, DPI, correo, telefono, direccion, "
+                   + "fechaNacimiento, departamento, puesto, salario, HoraIngreso, HoraEgreso, estado) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection cx = ConexionBD.getInstancia().conectar();
              PreparedStatement ps = cx.prepareStatement(sql)) {
 
-            ps.setString(1, empleado.getNombre());  //prepared statment 
+
+            ps.setString(1, empleado.getNombre());
             ps.setString(2, empleado.getApellido());
-            ps.setString(3, empleado.getDpi());
+            ps.setInt(3, Integer.parseInt(empleado.getDpi()));
             ps.setString(4, empleado.getCorreo());
-            ps.setString(5, empleado.getTelefono());
+            ps.setInt(5, Integer.parseInt(empleado.getTelefono()));
             ps.setString(6, empleado.getDireccion());
             ps.setDate(7, new java.sql.Date(empleado.getFechaNac().getTime()));
-            ps.setInt(8, empleado.getEdad());
-            ps.setDouble(9, empleado.getSalario());
-            ps.setString(10, empleado.getDepartamento());
-            ps.setString(11, empleado.getHoraing());
-            ps.setString(12, empleado.getHoraeg());
-            ps.setString(13, empleado.getEstado());
-            ps.setString(14, empleado.getPuesto());
-            ps.setDate(15, new java.sql.Date(empleado.getFechaRegistro().getTime()));
+            
+            ps.setString(8, empleado.getDepartamento());
+            ps.setString(9, empleado.getPuesto());
+            ps.setDouble(10, empleado.getSalario());
+            ps.setTime(11, empleado.getHoraEntrada());
+            ps.setTime(12, empleado.getHoraSalida());
+            ps.setBoolean(13, true);
 
             ps.executeUpdate();
-            int codigoEmpleado = 0;
 
-            // ✅ Solo este mensaje se muestra
-            if (codigoEmpleado != -1) {
-                JOptionPane.showMessageDialog(null, 
-                    "✅ Cliente registrado con éxito.\nCódigo Cliente: " + codigoEmpleado,
-                    "Información",
-                    JOptionPane.INFORMATION_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(null,
+                "Empleado registrado con éxito.",
+                "Información",
+                JOptionPane.INFORMATION_MESSAGE);
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "❌ Error al registrar Empleado: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al registrar empleado: " + ex.getMessage());
+            ex.printStackTrace();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Error: valores invalidos");
         }
-    } else {
-        JOptionPane.showMessageDialog(null, "❌ Registro cancelado por el usuario.");
     }
-  }  
-  
-  public void mostrarEmpleados(JTable tabla) {
-    String[] columnas = {
-        "Código", "Nombre", "Apellido", "DPI", "E-mail", 
-        "Teléfono", "Dirección", "Fecha de Nacimiento", 
-        "Edad", "Salario", "Departamento", "Hora de Ingreso", 
-        "Hora de Egreso", "Estado", "Puesto", "Fecha de Registro"
-    };
+    
+public DefaultTableModel TablaEmpleados() {
+    
+    String[] nombresColumnas = {"ID", "Nombre", "Apellido", "DPI", "Fecha de Nacimiento", "E-mail", "Teléfono", "Dirección", "Puesto", "Departamento", "Salario", "Horario de Ingreso", "Hora de Egreso", "Estado"};
+    DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
 
-    DefaultTableModel modelo = new DefaultTableModel(null, columnas);
+    String sql = "SELECT codigoEmpleado, nombre, apellido, DPI, fechaNacimiento, correo, telefono, direccion, puesto, departamento, salario, HoraIngreso, HoraEgreso, estado FROM empleados"; 
 
-    String sql = "SELECT codigoEmpleado, nombre, apellido, dpi, correo, telefono, direccion, fechaNacimiento, edad, salario, departamento, horaentrada, horasalida, estado, puesto, fechaRegistro FROM empleados";
-
-    try (Connection cx = ConexionBD.getInstancia().conectar();
+    try (Connection cx = ConexionBD.getInstancia().conectar();  
          PreparedStatement ps = cx.prepareStatement(sql);
-         var rs = ps.executeQuery()) {
+         ResultSet rs = ps.executeQuery()) { 
 
         while (rs.next()) {
-            Object[] fila = new Object[columnas.length];
-            fila[0] = rs.getInt("codigoEmpleado");
-            fila[1] = rs.getString("nombre");
-            fila[2] = rs.getString("apellido");
-            fila[3] = rs.getString("dpi");
-            fila[4] = rs.getString("correo");
-            fila[5] = rs.getString("telefono");
-            fila[6] = rs.getString("direccion");
-            fila[7] = rs.getDate("fechaNacimiento");
-            fila[8] = rs.getInt("edad");
-            fila[9] = rs.getDouble("salario");
-            fila[10] = rs.getString("departamento");
-            fila[11] = rs.getString("horaentrada");
-            fila[12] = rs.getString("horasalida");
-            fila[13] = rs.getString("estado");
-            fila[14] = rs.getString("puesto");
-            fila[15] = rs.getDate("fechaRegistro");
+            Object[] fila = new Object[14]; 
+            
+            fila[0] = rs.getInt("codigoEmpleado"); 
+            fila[1] = rs.getString("nombre"); 
+            fila[2] = rs.getString("apellido"); 
+            fila[3] = rs.getInt("DPI");
+            fila[4] = rs.getDate("fechaNacimiento");
+            fila[5] = rs.getString("correo");
+            fila[6] = rs.getInt("telefono");
+            fila[7] = rs.getString("direccion");
+            fila[8] = rs.getString("puesto");
+            fila[9] = rs.getString("departamento");
+            fila[10] = rs.getDouble("salario");
+            fila[11] = rs.getTime("HoraIngreso");
+            fila[12] = rs.getTime("HoraEgreso");
+            fila[13] = rs.getBoolean("estado") ? "Activo" : "Inactivo";
+            
             modelo.addRow(fila);
         }
 
-        tabla.setModel(modelo);
-
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "❌ Error al mostrar empleados: " + ex.getMessage());
+    } catch (SQLException e) {
+        System.err.println("Error al cargar la tabla de empleados");
+        System.err.println("Mensaje: " + e.getMessage());
+        e.printStackTrace();
+        return new DefaultTableModel(null, nombresColumnas);
     }
+    
+    return modelo;
 }
+    
 }
-
