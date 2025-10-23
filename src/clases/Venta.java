@@ -93,7 +93,7 @@ public class Venta {
      */
     public void agregarProductoATabla(JTable tabla, int codigoProducto, String nombreProducto, int cantidad, double precio) {
         try {
-            // Validaciones básicas
+            // Validaciones
             if (cantidad <= 0) {
                 JOptionPane.showMessageDialog(null, "❌ La cantidad debe ser mayor a 0");
                 return;
@@ -221,7 +221,7 @@ public class Venta {
         this.total = 0;
     }
 
-    // ========== FUNCIÓN 2: GENERAR VENTA (CALCULAR TOTAL E INGRESAR A BD) ==========
+    // ========== GENERAR VENTA (CALCULAR TOTAL E INGRESAR A BD) ==========
     
     /**
      * Calcula el total de la venta
