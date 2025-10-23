@@ -175,7 +175,7 @@ public final class Producto {
         String sql = "SELECT p.codigoProducto, p.nombre, p.precio, p.stock, c.nombre as categoriaNombre " +
                      "FROM producto p " +
                      "INNER JOIN categoria c ON p.categoria = c.codigoCategoria " +
-                     "WHERE p.estado = 'ACTIVO' " + // ✅ Filtrar solo productos activos
+                     "WHERE p.estado = 'ACTIVO' " +
                      "ORDER BY p.nombre ASC";
 
         try (Connection cx = ConexionBD.getInstancia().conectar();

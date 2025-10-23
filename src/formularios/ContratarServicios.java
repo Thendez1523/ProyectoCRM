@@ -61,7 +61,7 @@ public class ContratarServicios extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jTextFieldTelefonoContacto = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonContratarServicio = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel10 = new javax.swing.JLabel();
@@ -101,8 +101,18 @@ public class ContratarServicios extends javax.swing.JFrame {
         jLabel8.setText("Telefono");
 
         jButton1.setText("Verificar Datos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Generar Contratacion");
+        jButtonContratarServicio.setText("Generar Contratacion");
+        jButtonContratarServicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonContratarServicioActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Fecha de Inicio");
 
@@ -167,7 +177,7 @@ public class ContratarServicios extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton2)
+                                    .addComponent(jButtonContratarServicio)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
@@ -235,7 +245,7 @@ public class ContratarServicios extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
-                            .addComponent(jButton2)))
+                            .addComponent(jButtonContratarServicio)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jRadioButton4)
                         .addContainerGap(92, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -243,6 +253,14 @@ public class ContratarServicios extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButtonContratarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonContratarServicioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonContratarServicioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -282,7 +300,7 @@ public class ContratarServicios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonContratarServicio;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<Cliente> jComboBoxClientes;

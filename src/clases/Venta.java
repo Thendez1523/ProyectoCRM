@@ -63,7 +63,8 @@ public class Venta {
     public String getNombreCliente() { return nombreCliente; }
     public void setNombreCliente(String nombreCliente) { this.nombreCliente = nombreCliente; }
 
-    // ========== MÉTODO toString PARA COMBOBOX ==========
+
+// ========== MÉTODO toString PARA COMBOBOX ==========
     @Override
     public String toString() {
         return String.format("Venta #%d - %s - Q%,.2f", codigoVenta, nombreCliente, total);
@@ -263,7 +264,7 @@ public class Venta {
         calcularTotal(tabla);
         
         String sqlVenta = "INSERT INTO venta (codigoCliente, codigoEmpleado, fechaVenta, total, estado, direccion) " +
-                         "VALUES (?, ?, NOW(), ?, 'ACTIVA', ?)";
+                         "VALUES (?, ?, NOW(), ?, 'PENDIENTE', ?)";
         
         Connection cx = null;
         try {
@@ -472,7 +473,90 @@ public class Venta {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "❌ Error al cargar ventas detalladas: " + ex.getMessage());
         }
+    } 
+    
+    //MOSTRAR VENTA COMPLETA
+      
+   public void mostrarVentasCompletas(JTable tabla) {
+    String[] columnas = {
+        "No. Venta", "Cliente", "Dirección", "Producto",
+        "Cantidad", "Total", "Estado"
+    };
+
+    DefaultTableModel modelo = new DefaultTableModel(null, columnas) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+
+    String sql = """
+        SELECT v.codigoVenta,
+               CONCAT(c.nombre, ' ', c.apellido) AS nombreCliente,
+               v.direccion,
+               p.nombre AS nombreProducto,
+               dv.cantidad,
+               v.total,
+               v.estado
+        FROM detalleVenta dv
+        INNER JOIN venta v ON dv.codigoVenta = v.codigoVenta
+        INNER JOIN producto p ON dv.codigoProducto = p.codigoProducto
+        INNER JOIN cliente c ON v.codigoCliente = c.codigoCliente
+        ORDER BY v.fechaVenta DESC, v.codigoVenta DESC
+    """;
+
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            Object[] fila = new Object[columnas.length];
+            fila[0] = rs.getInt("codigoVenta");
+            fila[1] = rs.getString("nombreCliente");
+            fila[2] = rs.getString("direccion");
+            fila[3] = rs.getString("nombreProducto");
+            fila[4] = rs.getInt("cantidad");
+            fila[5] = rs.getDouble("total");
+            fila[6] = rs.getString("estado");
+            modelo.addRow(fila);
+        }
+
+        tabla.setModel(modelo);
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "❌ Error al cargar ventas detalladas: " + ex.getMessage());
     }
+}
+   //Actualizar Estado Venta
+   public static void actualizarEstadoVenta(int codigoVenta, JComboBox<String> jComboBoxEstado) {
+    String sql = "UPDATE venta SET estado = ? WHERE codigoVenta = ?";
+
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql)) {
+
+        // Obtener el valor seleccionado del ComboBox
+        String nuevoEstado = jComboBoxEstado.getSelectedItem().toString();
+
+        // Asignar los valores a la consulta
+        ps.setString(1, nuevoEstado);
+        ps.setInt(2, codigoVenta);
+
+        // Ejecutar actualización
+        int filasAfectadas = ps.executeUpdate();
+
+        if (filasAfectadas > 0) {
+            JOptionPane.showMessageDialog(null, 
+                "✅ Estado actualizado correctamente a: " + nuevoEstado);
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                "⚠️ No se encontró la venta con código: " + codigoVenta);
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, 
+            "❌ Error al actualizar estado: " + ex.getMessage());
+    }
+}
 
     // ========== MÉTODO PARA COMBOBOX DE VENTAS ==========
     
