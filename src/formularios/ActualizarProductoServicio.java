@@ -177,7 +177,7 @@ public class ActualizarProductoServicio extends javax.swing.JFrame {
 
         // Obtener los valores desde los componentes del JFrame
         producto.setCodigoProducto(Integer.parseInt(jFormattedTextField3.getText()));
-        producto.setNombreProducto(jTextField2.getText());
+        producto.setNombre(jTextField2.getText());
         producto.setDescripcion(jTextField3.getText());
         producto.setCategoria(jComboBox3.getSelectedItem().toString()); 
         producto.setEstado(jComboBox2.getSelectedItem().toString()); 

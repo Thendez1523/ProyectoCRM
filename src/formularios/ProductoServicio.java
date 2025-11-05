@@ -142,7 +142,7 @@ public class ProductoServicio extends javax.swing.JFrame {
     try {
         ServicioProducto nuevoProducto = new ServicioProducto();
 
-        nuevoProducto.setNombreProducto(jTextField2.getText());
+        nuevoProducto.setNombre(jTextField2.getText());
         nuevoProducto.setDescripcion(jTextField3.getText());
         nuevoProducto.setCosto(Double.parseDouble(jTextField5.getText()));
         nuevoProducto.setPrecio(Double.parseDouble(jTextField4.getText()));
