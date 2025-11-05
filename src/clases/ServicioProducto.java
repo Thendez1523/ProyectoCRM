@@ -6,12 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 
 public class ServicioProducto {
 
     private int codigoProducto;
-    private String nombreProducto;
+    private String nombre;
     private String descripcion;
     private String tipo;
     private String categoria;
@@ -22,13 +24,24 @@ public class ServicioProducto {
 
     // ✅ Constructor vacío
     public ServicioProducto() {}
+    public ServicioProducto(int codigoProducto, String nombre, String categoria, double precio, int stock) {
+    this.codigoProducto = codigoProducto;
+    this.nombre = nombre;
+    this.categoria = categoria;
+    this.precio = precio;
+    this.stock = stock;
+}
+    
+    public String toString() {
+    return codigoProducto + " - " + nombre + " - Q" + precio;
+}
 
     // ================= GETTERS Y SETTERS ================= //
     public int getCodigoProducto() { return codigoProducto; }
     public void setCodigoProducto(int codigoProducto) { this.codigoProducto = codigoProducto; }
 
-    public String getNombreProducto() { return nombreProducto; }
-    public void setNombreProducto(String nombre) { this.nombreProducto = nombre; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
@@ -55,6 +68,63 @@ public class ServicioProducto {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+    
+    //COMBOBOX
+      public static void comboProductos(JComboBox<ServicioProducto> comboBox) {
+    DefaultComboBoxModel<ServicioProducto> model = new DefaultComboBoxModel<>();
+
+    String sql = "SELECT p.codigoProducto, p.nombre, p.precio, p.stock, p.categoria AS categoriaNombre " +
+                 "FROM producto p " +
+                 "WHERE p.estado = 'ACTIVO' AND p.categoria = 'Producto' " +
+                 "ORDER BY p.nombre ASC";
+
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            int codigo = rs.getInt("codigoProducto");
+            String nombre = rs.getString("nombre");
+            String categoriaNombre = rs.getString("categoriaNombre");
+            double precio = rs.getDouble("precio");
+            int stock = rs.getInt("stock");
+
+            ServicioProducto producto = new ServicioProducto(codigo, nombre, categoriaNombre, precio, stock);
+            model.addElement(producto);
+        }
+
+        comboBox.setModel(model);
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "❌ Error al mostrar productos: " + ex.getMessage());
+        ex.printStackTrace();
+    }
+}
+    
+     public static void comboServicios(JComboBox<ServicioProducto> comboBox) {
+    DefaultComboBoxModel<ServicioProducto> modelo = new DefaultComboBoxModel<>();
+    comboBox.removeAllItems();
+
+    String sql = "SELECT codigoProducto, nombre FROM producto WHERE categoria = 'Servicio'";
+
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            ServicioProducto sp = new ServicioProducto();
+            sp.setCodigoProducto(rs.getInt("codigoProducto"));
+            sp.setNombre(rs.getString("nombre"));
+            modelo.addElement(sp);
+        }
+
+        comboBox.setModel(modelo);
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "❌ Error al cargar servicios: " + ex.getMessage());
+        ex.printStackTrace();
+    }
+}
 
     // crear producto
         public void CrearProducto(ServicioProducto producto) {
@@ -64,7 +134,7 @@ public class ServicioProducto {
     try (Connection cx = ConexionBD.getInstancia().conectar();
          PreparedStatement ps = cx.prepareStatement(sql)) {
 
-        ps.setString(1, producto.getNombreProducto());
+        ps.setString(1, producto.getNombre());
         ps.setString(2, producto.getDescripcion());
         ps.setString(3, producto.getCategoria()); 
         ps.setString(4, producto.getEstado());
@@ -127,7 +197,7 @@ public class ServicioProducto {
 public void ActualizarProductoServicio(ServicioProducto productoservicio) {
     String mensaje = "¿Deseas actualizar este producto o servicio?\n\n"
             + "Código: " + productoservicio.getCodigoProducto() + "\n"
-            + "Nombre: " + productoservicio.getNombreProducto() + "\n"
+            + "Nombre: " + productoservicio.getNombre() + "\n"
             + "Descripción: " + productoservicio.getDescripcion() + "\n"
             + "Categoría: " + productoservicio.getCategoria() + "\n"
             + "Estado: " + productoservicio.getEstado() + "\n"
@@ -166,7 +236,7 @@ public void ActualizarProductoServicio(ServicioProducto productoservicio) {
                         + "WHERE codigoProducto = ?";
 
                 try (PreparedStatement psUpdate = cx.prepareStatement(sqlUpdate)) {
-                    psUpdate.setString(1, productoservicio.getNombreProducto());
+                    psUpdate.setString(1, productoservicio.getNombre());
                     psUpdate.setString(2, productoservicio.getDescripcion());
                     psUpdate.setString(3, productoservicio.getCategoria());
                     psUpdate.setString(4, productoservicio.getEstado());
@@ -191,7 +261,7 @@ public void ActualizarProductoServicio(ServicioProducto productoservicio) {
 
                 try (PreparedStatement psInsert = cx.prepareStatement(sqlInsert)) {
                     psInsert.setInt(1, productoservicio.getCodigoProducto());
-                    psInsert.setString(2, productoservicio.getNombreProducto());
+                    psInsert.setString(2, productoservicio.getNombre());
                     psInsert.setString(3, productoservicio.getDescripcion());
                     psInsert.setString(4, productoservicio.getCategoria());
                     psInsert.setString(5, productoservicio.getEstado());
@@ -241,7 +311,7 @@ public void ActualizarProductoServicio(ServicioProducto productoservicio) {
     } catch (SQLException ex) {
         JOptionPane.showMessageDialog(null, 
             "❌ Error al eliminar producto/servicio: " + ex.getMessage(),
-            "Error de Base de Datos", 
+            "Error de Base de Dato  s", 
             JOptionPane.ERROR_MESSAGE);
         ex.printStackTrace();
         return false;

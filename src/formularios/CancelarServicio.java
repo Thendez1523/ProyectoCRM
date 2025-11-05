@@ -4,6 +4,10 @@
  */
 package formularios;
 
+import clases.ConexionBD;
+import clases.ContratacionServicio;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author MarcosCano
@@ -15,6 +19,17 @@ public class CancelarServicio extends javax.swing.JFrame {
      */
     public CancelarServicio() {
         initComponents();
+    ContratacionServicio.comboContrataciones(jComboBoxContrataciones);
+
+    // 🔹 Evento al seleccionar una contratación
+    jComboBoxContrataciones.addActionListener(e -> {
+    ContratacionServicio seleccionada = (ContratacionServicio) jComboBoxContrataciones.getSelectedItem();
+    if (seleccionada != null) {
+        jLabelCliente.setText(seleccionada.getNombreCliente());
+        jLabelDireccion.setText(seleccionada.getDireccionInstalacion());
+        jLabelServicio.setText(seleccionada.getNombreServicio());
+    }
+});
     }
 
     /**
@@ -28,18 +43,18 @@ public class CancelarServicio extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextAreaMotivo = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jComboBoxContrataciones = new javax.swing.JComboBox<>();
+        jLabelCliente = new javax.swing.JLabel();
+        jLabelDireccion = new javax.swing.JLabel();
+        jLabelServicio = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -51,19 +66,30 @@ public class CancelarServicio extends javax.swing.JFrame {
 
         jLabel4.setText("Direccion del Servicio");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel5.setText("Tipo de Servicio");
 
         jLabel6.setText("Motivo Cancelacion");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextAreaMotivo.setColumns(20);
+        jTextAreaMotivo.setRows(5);
+        jScrollPane1.setViewportView(jTextAreaMotivo);
 
         jButton1.setText("Verificar Informacion");
 
         jButton2.setText("Generar Cancelacion");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jComboBoxContrataciones.setModel(new javax.swing.DefaultComboBoxModel<ContratacionServicio>());
+
+        jLabelCliente.setText(".");
+
+        jLabelDireccion.setText(".");
+
+        jLabelServicio.setText(".");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,10 +107,10 @@ public class CancelarServicio extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addGap(95, 95, 95)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField2)))
+                            .addComponent(jComboBoxContrataciones, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelServicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton1)
@@ -106,27 +132,27 @@ public class CancelarServicio extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxContrataciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelCliente))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelDireccion))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                    .addComponent(jLabelServicio))
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -135,6 +161,50 @@ public class CancelarServicio extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+ try {
+        // Obtener contratación seleccionada
+        ContratacionServicio seleccionada = (ContratacionServicio) jComboBoxContrataciones.getSelectedItem();
+
+        if (seleccionada == null) {
+            JOptionPane.showMessageDialog(this, "⚠️ Debe seleccionar una contratación para cancelar.");
+            return;
+        }
+
+        // Obtener motivo
+        String motivo = jTextAreaMotivo.getText().trim();
+        if (motivo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "⚠️ Ingrese el motivo de la cancelación.");
+            return;
+        }
+
+        // Crear objeto y asignar datos
+        ContratacionServicio c = new ContratacionServicio();
+        c.setCodigoContratacion(seleccionada.getCodigoContratacion());
+        c.setMotivo(motivo);
+        c.setFechaCancelacion(new java.sql.Date(System.currentTimeMillis()));
+
+        // Llamar al método de cancelación
+        if (c.registrarCancelacion()) {
+            JOptionPane.showMessageDialog(this, "✅ Servicio cancelado correctamente.");
+
+            // Actualizar combo y limpiar interfaz
+            ContratacionServicio.comboContrataciones(jComboBoxContrataciones);
+            jTextAreaMotivo.setText("");
+            jLabelCliente.setText("-");
+            jLabelServicio.setText("-");
+            jLabelDireccion.setText("-");
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+                "❌ Error al cancelar servicio:\n" + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,17 +244,17 @@ public class CancelarServicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<ContratacionServicio> jComboBoxContrataciones;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabelCliente;
+    private javax.swing.JLabel jLabelDireccion;
+    private javax.swing.JLabel jLabelServicio;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextArea jTextAreaMotivo;
     // End of variables declaration//GEN-END:variables
 }

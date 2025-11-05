@@ -5,7 +5,7 @@
 package formularios;
 
 import clases.Cliente;
-import clases.Producto;
+import clases.ServicioProducto;
 import clases.Venta;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -22,7 +22,7 @@ public class Ventas extends javax.swing.JFrame {
     public Ventas() {
         initComponents();
         Cliente.comboCliente(jComboBoxClientes);
-    Producto.comboProductos(jComboBoxProductos);
+    ServicioProducto.comboProductos(jComboBoxProductos);
     
     // Inicializar tabla de productos
     Venta venta = new Venta();
@@ -152,7 +152,12 @@ public class Ventas extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxProductos.setModel(new javax.swing.DefaultComboBoxModel<Producto>());
+        jComboBoxProductos.setModel(new javax.swing.DefaultComboBoxModel<ServicioProducto>());
+        jComboBoxProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxProductosActionPerformed(evt);
+            }
+        });
 
         jLabel15.setText("Correo Contacto");
 
@@ -322,10 +327,10 @@ public class Ventas extends javax.swing.JFrame {
     
     // Evento para producto seleccionado
     jComboBoxProductos.addActionListener(e -> {
-        Producto seleccionado = (Producto) jComboBoxProductos.getSelectedItem();
+        ServicioProducto seleccionado = (ServicioProducto) jComboBoxProductos.getSelectedItem();
         if (seleccionado != null) {
             jLabelNombreProducto.setText(seleccionado.getNombre());
-            jLabelCategoriaProducto.setText(seleccionado.getCategoriaNombre());
+            jLabelCategoriaProducto.setText(seleccionado.getCategoria());
             jTextFieldPrecioProducto.setText(String.valueOf(seleccionado.getPrecio()));
         }
     });
@@ -351,7 +356,7 @@ public class Ventas extends javax.swing.JFrame {
     private void jButtonAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarProductoActionPerformed
  try {
         // Validar selección de producto
-        Producto productoSeleccionado = (Producto) jComboBoxProductos.getSelectedItem();
+        ServicioProducto productoSeleccionado = (ServicioProducto) jComboBoxProductos.getSelectedItem();
         if (productoSeleccionado == null) {
             JOptionPane.showMessageDialog(this, "❌ Debe seleccionar un producto", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -462,6 +467,10 @@ private void limpiarFormulario() {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxClientesActionPerformed
 
+    private void jComboBoxProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxProductosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxProductosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -503,7 +512,7 @@ private void limpiarFormulario() {
     private javax.swing.JButton jButtonGenerarVenta;
     private javax.swing.JButton jButtonRevisarDatos;
     private javax.swing.JComboBox<Cliente> jComboBoxClientes;
-    private javax.swing.JComboBox<Producto> jComboBoxProductos;
+    private javax.swing.JComboBox<ServicioProducto> jComboBoxProductos;
     private javax.swing.JFormattedTextField jFormattedTextFieldCodigoEmpleado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

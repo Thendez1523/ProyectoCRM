@@ -1,6 +1,8 @@
 package formularios;
 
+import clases.Departamento;
 import clases.Empleado;
+import clases.Puestos;
 import javax.swing.JOptionPane;
 import java.sql.Time;
 
@@ -8,9 +10,23 @@ import java.sql.Time;
 public class Empleados extends javax.swing.JFrame {
 
 
-    public Empleados() {
-        initComponents();
-    }
+   public Empleados() {
+    initComponents();
+
+    // 1️⃣ Cargar departamentos en el combo
+    Departamento.cargarDepartamentos(jComboBoxDepartamento);
+
+    // 2️⃣ Evento: cuando cambia el departamento, cargar los puestos correspondientes
+    jComboBoxDepartamento.addActionListener(e -> {
+        Departamento seleccionado = (Departamento) jComboBoxDepartamento.getSelectedItem();
+        if (seleccionado != null) {
+            int codigoDepto = seleccionado.getCodigoDepartamento();
+            Puestos.comboPuestosPorDepartamento(jComboBoxPuesto, codigoDepto);
+        } else {
+            jComboBoxPuesto.removeAllItems(); // limpiar si no hay selección
+        }
+    });
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -47,7 +63,7 @@ public class Empleados extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Nuevo Empleado");
 
-        jComboBoxDepartamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxDepartamento.setModel(new javax.swing.DefaultComboBoxModel<Departamento>());
         jComboBoxDepartamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxDepartamentoActionPerformed(evt);
@@ -56,7 +72,7 @@ public class Empleados extends javax.swing.JFrame {
 
         jLabel12.setText("Puesto");
 
-        jComboBoxPuesto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxPuesto.setModel(new javax.swing.DefaultComboBoxModel<Puestos>());
 
         jLabel13.setText("Salario");
 
@@ -233,8 +249,32 @@ public class Empleados extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+Departamento depto = (Departamento) jComboBoxDepartamento.getSelectedItem();
+Puestos puesto = (Puestos) jComboBoxPuesto.getSelectedItem();
 
 try {
+    // Validar que se hayan seleccionado departamento y puesto
+    if (depto == null || puesto == null) {
+        JOptionPane.showMessageDialog(this, "⚠️ Selecciona un departamento y un puesto antes de guardar.");
+        return;
+    }
+
+    // Validar campos obligatorios
+    if (jTextFieldNombre.getText().trim().isEmpty() ||
+        jTextFieldApellido.getText().trim().isEmpty() ||
+        jTextFieldDPI.getText().trim().isEmpty() ||
+        jTextFieldCorreo.getText().trim().isEmpty() ||
+        jTextFieldTelefono.getText().trim().isEmpty() ||
+        jTextFieldDireccion.getText().trim().isEmpty() ||
+        jTextFieldSalario.getText().trim().isEmpty() ||
+        jTextFieldHoraEntrada.getText().trim().isEmpty() ||
+        jTextFieldHoraSalida.getText().trim().isEmpty()) {
+
+        JOptionPane.showMessageDialog(this, "⚠️ Completa todos los campos antes de guardar.");
+        return;
+    }
+
+    // Crear objeto empleado
     Empleado emp = new Empleado();
     emp.setNombre(jTextFieldNombre.getText());
     emp.setApellido(jTextFieldApellido.getText());
@@ -243,19 +283,48 @@ try {
     emp.setTelefono(jTextFieldTelefono.getText());
     emp.setDireccion(jTextFieldDireccion.getText());
     emp.setFechaNac(jDateChooserFechaNac.getDate());
-    emp.setDepartamento(jComboBoxDepartamento.getSelectedItem().toString());
-    emp.setPuesto(jComboBoxPuesto.getSelectedItem().toString());
+    emp.setDepartamento(depto.getCodigoDepartamento());
+    emp.setPuesto(puesto.getCodigoPuesto());
     emp.setSalario(Double.parseDouble(jTextFieldSalario.getText()));
-    emp.setHoraEntrada(Time.valueOf(jTextFieldHoraEntrada.getText()));
-    emp.setHoraSalida(Time.valueOf(jTextFieldHoraSalida.getText()));
 
+    // ✅ Corrección: concatenamos ":00" si no tiene segundos
+    String horaEntradaTxt = jTextFieldHoraEntrada.getText().trim();
+    String horaSalidaTxt = jTextFieldHoraSalida.getText().trim();
+
+    // Validar formato básico
+    if (!horaEntradaTxt.matches("\\d{2}:\\d{2}") || !horaSalidaTxt.matches("\\d{2}:\\d{2}")) {
+        JOptionPane.showMessageDialog(this, "⚠️ Ingresa las horas en formato HH:mm (por ejemplo, 09:00)");
+        return;
+    }
+
+    emp.setHoraEntrada(Time.valueOf(horaEntradaTxt + ":00"));
+    emp.setHoraSalida(Time.valueOf(horaSalidaTxt + ":00"));
+
+    // Guardar empleado en BD
     emp.CrearEmpleado(emp);
-    JOptionPane.showMessageDialog(this, "Guardado exitoso");
 
+    JOptionPane.showMessageDialog(this, "✅ Empleado guardado exitosamente.");
+
+    // Opcional: limpiar campos
+    jTextFieldNombre.setText("");
+    jTextFieldApellido.setText("");
+    jTextFieldDPI.setText("");
+    jTextFieldCorreo.setText("");
+    jTextFieldTelefono.setText("");
+    jTextFieldDireccion.setText("");
+    jTextFieldSalario.setText("");
+    jTextFieldHoraEntrada.setText("");
+    jTextFieldHoraSalida.setText("");
+    jDateChooserFechaNac.setDate(null);
+    jComboBoxDepartamento.setSelectedIndex(-1);
+    jComboBoxPuesto.removeAllItems();
+
+} catch (NumberFormatException e) {
+    JOptionPane.showMessageDialog(this, "⚠️ El salario debe ser un número válido.");
 } catch (Exception e) {
-    JOptionPane.showMessageDialog(this, "Error al guardar");
+    JOptionPane.showMessageDialog(this, "❌ Error al guardar: " + e.getMessage());
+    e.printStackTrace();
 }
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
@@ -311,8 +380,8 @@ try {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBoxDepartamento;
-    private javax.swing.JComboBox<String> jComboBoxPuesto;
+    private javax.swing.JComboBox<Departamento> jComboBoxDepartamento;
+    private javax.swing.JComboBox<Puestos> jComboBoxPuesto;
     private com.toedter.calendar.JDateChooser jDateChooserFechaNac;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
