@@ -140,79 +140,121 @@ public class ContratacionServicio {
 
     // --- Combo de contrataciones activas ---
     public static void comboContrataciones(JComboBox<ContratacionServicio> comboBox) {
-        DefaultComboBoxModel<ContratacionServicio> modelo = new DefaultComboBoxModel<>();
-        comboBox.removeAllItems();
+    DefaultComboBoxModel<ContratacionServicio> modelo = new DefaultComboBoxModel<>();
+    comboBox.removeAllItems();
 
-        String sql = """
-            SELECT c.codigoContratacion, c.direccionInstalacion, 
-                   cl.nombre AS nombreCliente, cl.apellido AS apellidoCliente,
-                   p.nombre AS nombreServicio
-            FROM contrataciones c
-            INNER JOIN cliente cl ON c.cliente = cl.codigoCliente
-            INNER JOIN producto p ON c.servicio = p.codigoProducto
-            WHERE p.categoria = 'Servicio' AND c.estado <> 'Cancelado'
-            ORDER BY cl.nombre ASC
-        """;
+    String sql = """
+        SELECT c.codigoContratacion, c.direccionInstalacion, c.estado,
+               cl.nombre AS nombreCliente, cl.apellido AS apellidoCliente,
+               p.nombre AS nombreServicio
+        FROM contrataciones c
+        INNER JOIN cliente cl ON c.cliente = cl.codigoCliente
+        INNER JOIN producto p ON c.servicio = p.codigoProducto
+        WHERE c.estado = 'ACTIVO'
+        ORDER BY cl.nombre ASC
+    """;
 
-        try (Connection cx = ConexionBD.getInstancia().conectar();
-             PreparedStatement ps = cx.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
-                ContratacionServicio cont = new ContratacionServicio();
-                cont.setCodigoContratacion(rs.getInt("codigoContratacion"));
-                cont.setDireccionInstalacion(rs.getString("direccionInstalacion"));
-                cont.setNombreCliente(rs.getString("nombreCliente") + " " + rs.getString("apellidoCliente"));
-                cont.setNombreServicio(rs.getString("nombreServicio"));
-                modelo.addElement(cont);
-            }
-
-            comboBox.setModel(modelo);
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "❌ Error al cargar contrataciones: " + ex.getMessage());
-            ex.printStackTrace();
+        int contador = 0;
+        while (rs.next()) {
+            contador++;
+            ContratacionServicio cont = new ContratacionServicio();
+            cont.setCodigoContratacion(rs.getInt("codigoContratacion"));
+            cont.setDireccionInstalacion(rs.getString("direccionInstalacion"));
+            cont.setNombreCliente(rs.getString("nombreCliente") + " " + rs.getString("apellidoCliente"));
+            cont.setNombreServicio(rs.getString("nombreServicio"));
+            modelo.addElement(cont);
         }
+
+        comboBox.setModel(modelo);
+        System.out.println("✅ Contrataciones ACTIVAS cargadas: " + contador);
+
+        if (contador == 0) {
+            JOptionPane.showMessageDialog(null, 
+                "No se encontraron contrataciones activas", 
+                "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, 
+            "❌ Error al cargar contrataciones: " + ex.getMessage());
+        ex.printStackTrace();
     }
+}
 
     // --- Cancelar servicio ---
     public boolean registrarCancelacion() {
-        String sqlInsert = """
-            INSERT INTO cancelaciones (contratacion, fechaCancelacion, motivo)
-            VALUES (?, ?, ?)
-        """;
+    String sqlInsert = """
+        INSERT INTO cancelaciones (contratacion, fechaCancelacion, motivo)
+        VALUES (?, ?, ?)
+    """;
 
-        String sqlUpdate = """
-            UPDATE contrataciones
-            SET estado = 'Cancelado'
-            WHERE codigoContratacion = ?
-        """;
+    String sqlUpdate = """
+        UPDATE contrataciones
+        SET estado = 'Cancelado'
+        WHERE codigoContratacion = ?
+    """;
 
-        try (Connection cx = ConexionBD.getInstancia().conectar();
-             PreparedStatement psInsert = cx.prepareStatement(sqlInsert);
-             PreparedStatement psUpdate = cx.prepareStatement(sqlUpdate)) {
+    Connection cx = null;
+    try {
+        cx = ConexionBD.getInstancia().conectar();
+        cx.setAutoCommit(false); // Iniciar transacción
 
+        try (PreparedStatement psUpdate = cx.prepareStatement(sqlUpdate)) {
+            // PRIMERO actualizar la contratación
+            psUpdate.setInt(1, this.codigoContratacion);
+            int filasActualizadas = psUpdate.executeUpdate();
+            
+            if (filasActualizadas == 0) {
+                JOptionPane.showMessageDialog(null,
+                        "❌ No se encontró la contratación con código: " + this.codigoContratacion,
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                cx.rollback();
+                return false;
+            }
+        }
+
+        try (PreparedStatement psInsert = cx.prepareStatement(sqlInsert)) {
+            // LUEGO insertar en cancelaciones
             psInsert.setInt(1, this.codigoContratacion);
             psInsert.setDate(2, this.fechaCancelacion);
             psInsert.setString(3, this.motivo);
             psInsert.executeUpdate();
+        }
 
-            psUpdate.setInt(1, this.codigoContratacion);
-            psUpdate.executeUpdate();
+        cx.commit(); // Confirmar ambas operaciones
 
-            JOptionPane.showMessageDialog(null,
-                    "✅ Servicio cancelado correctamente.",
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            return true;
+        JOptionPane.showMessageDialog(null,
+                "✅ Servicio cancelado correctamente.",
+                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        return true;
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null,
-                    "❌ Error al cancelar servicio:\n" + ex.getMessage(),
-                    "Error SQL", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
-            return false;
+    } catch (SQLException ex) {
+        try {
+            if (cx != null) cx.rollback(); // Revertir en caso de error
+        } catch (SQLException rbEx) {
+            rbEx.printStackTrace();
+        }
+        
+        JOptionPane.showMessageDialog(null,
+                "❌ Error al cancelar servicio:\n" + ex.getMessage(),
+                "Error SQL", JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+        return false;
+    } finally {
+        try {
+            if (cx != null) {
+                cx.setAutoCommit(true);
+                cx.close();
+            }
+        } catch (SQLException closeEx) {
+            closeEx.printStackTrace();
         }
     }
+}
 
     //MOSTRAR CONTRATACIONES ACTIVAS
     public static DefaultTableModel obtenerContratacionesActivas() {

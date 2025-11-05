@@ -132,7 +132,7 @@ public class Reporte{
 
             ps.executeUpdate();
 
-            // ✅ Solo este mensaje se muestra
+                //Solo este mensaje se muestra
                 JOptionPane.showMessageDialog(null, 
                     "✅ Producto creado con éxito.\n",
                     "Información",
