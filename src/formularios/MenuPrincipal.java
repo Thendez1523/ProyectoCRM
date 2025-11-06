@@ -429,8 +429,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemRegistroEmpleadoActionPerformed
 
     private void jMenuItemActualizarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActualizarEmpleadoActionPerformed
-        ActualizarClientes acl = new ActualizarClientes();
-        acl.setVisible(true);
+        ActualizarEmpleado ace = new ActualizarEmpleado();
+        ace.setVisible(true);
     }//GEN-LAST:event_jMenuItemActualizarEmpleadoActionPerformed
 
     private void jMenuItemDespidoEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDespidoEmpleadoActionPerformed
@@ -461,7 +461,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCancelarServicioActionPerformed
 
     private void jMenuItemVisualizarServiciosVigentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVisualizarServiciosVigentesActionPerformed
-
+        VisualizarContrataciones vc=new VisualizarContrataciones();
+        vc.setVisible(true);
         
         
     }//GEN-LAST:event_jMenuItemVisualizarServiciosVigentesActionPerformed

@@ -1,41 +1,46 @@
 package clases;
 
-import clases.ConexionBD;
-import clases.ConexionBD;
-import clases.Persona;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Time;
-import javax.swing.JOptionPane;
-import java.util.Date;
-import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
+import java.sql.Time;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Empleado extends Persona {
-    private String departamento;
-    private String puesto;
+
+    private int codigoEmpleado;
+    private int departamento;
+    private int puesto;
     private double salario;
     private Time horaEntrada;
     private Time horaSalida;
 
+    // ======== Getters y Setters ========
+    public int getCodigoEmpleado() {
+        return codigoEmpleado;
+    }
 
-    public Empleado() {}
+    public void setCodigoEmpleado(int codigoEmpleado) {
+        this.codigoEmpleado = codigoEmpleado;
+    }
 
-
-    public String getDepartamento() {
+    public int getDepartamento() {
         return departamento;
     }
 
-    public void setDepartamento(String departamento) {
+    public void setDepartamento(int departamento) {
         this.departamento = departamento;
     }
 
-    public String getPuesto() {
+    public int getPuesto() {
         return puesto;
     }
 
-    public void setPuesto(String puesto) {
+    public void setPuesto(int puesto) {
         this.puesto = puesto;
     }
 
@@ -63,86 +68,240 @@ public class Empleado extends Persona {
         this.horaSalida = horaSalida;
     }
 
+    // ======== Constructor ========
+    public Empleado() {}
 
+    // ======== Crear empleado ========
     public void CrearEmpleado(Empleado empleado) {
-        String sql = "INSERT INTO empleados (nombre, apellido, DPI, correo, telefono, direccion, "
-                   + "fechaNacimiento, departamento, puesto, salario, HoraIngreso, HoraEgreso, estado) "
+        String sql = "INSERT INTO empleados (nombre, apellido, dpi, correo, telefono, direccion, "
+                   + "fechaNacimiento, departamento, puesto, salario, horaIngreso, horaEgreso, estado) "
                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection cx = ConexionBD.getInstancia().conectar();
              PreparedStatement ps = cx.prepareStatement(sql)) {
 
-
             ps.setString(1, empleado.getNombre());
             ps.setString(2, empleado.getApellido());
-            ps.setInt(3, Integer.parseInt(empleado.getDpi()));
+            ps.setString(3, empleado.getDpi());
             ps.setString(4, empleado.getCorreo());
-            ps.setInt(5, Integer.parseInt(empleado.getTelefono()));
+            ps.setString(5, empleado.getTelefono());
             ps.setString(6, empleado.getDireccion());
             ps.setDate(7, new java.sql.Date(empleado.getFechaNac().getTime()));
-            
-            ps.setString(8, empleado.getDepartamento());
-            ps.setString(9, empleado.getPuesto());
+            ps.setInt(8, empleado.getDepartamento());
+            ps.setInt(9, empleado.getPuesto());
             ps.setDouble(10, empleado.getSalario());
             ps.setTime(11, empleado.getHoraEntrada());
             ps.setTime(12, empleado.getHoraSalida());
-            ps.setBoolean(13, true);
+            ps.setString(13, "Activo");
 
             ps.executeUpdate();
-
-            JOptionPane.showMessageDialog(null,
-                "Empleado registrado con éxito.",
-                "Información",
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "✅ Empleado registrado con éxito.");
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al registrar empleado: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "❌ Error al registrar empleado: " + ex.getMessage());
             ex.printStackTrace();
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Error: valores invalidos");
+        }
+    }
+
+    // ======== Mostrar empleados en JTable ========
+   
+
+    // ======== Mostrar nombre completo en ComboBox ========
+    @Override
+    public String toString() {
+        return getNombre() + " " + getApellido();
+    }
+
+    // ======== Llenar ComboBox con empleados ========
+    public static void comboEmpleados(JComboBox<Empleado> comboBox) {
+        DefaultComboBoxModel<Empleado> modelo = new DefaultComboBoxModel<>();
+        comboBox.removeAllItems();
+
+        String sql = "SELECT codigoEmpleado, nombre, apellido FROM empleados ORDER BY nombre ASC";
+
+        try (Connection cx = ConexionBD.getInstancia().conectar();
+             PreparedStatement ps = cx.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Empleado emp = new Empleado();
+                emp.setCodigoEmpleado(rs.getInt("codigoEmpleado"));
+                emp.setNombre(rs.getString("nombre"));
+                emp.setApellido(rs.getString("apellido"));
+                modelo.addElement(emp);
+            }
+
+            comboBox.setModel(modelo);
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "❌ Error al cargar empleados: " + ex.getMessage());
+        }
+    }
+
+    // ======== Obtener un empleado por ID ========
+    public static Empleado obtenerEmpleadoPorId(int codigoEmpleado) {
+    Empleado e = null;
+    String sql = "SELECT codigoEmpleado, nombre, apellido, dpi, correo, telefono, direccion, " +
+                 "fechaNacimiento, departamento, puesto, salario, horaIngreso, horaEgreso, estado " +
+                 "FROM empleados WHERE codigoEmpleado = ?";
+
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql)) {
+
+        ps.setInt(1, codigoEmpleado);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            e = new Empleado();
+            e.setCodigoEmpleado(rs.getInt("codigoEmpleado"));
+            e.setNombre(rs.getString("nombre"));
+            e.setApellido(rs.getString("apellido"));
+            e.setDpi(rs.getString("dpi"));
+            e.setCorreo(rs.getString("correo"));
+            e.setTelefono(rs.getString("telefono"));
+            e.setDireccion(rs.getString("direccion"));
+
+            // Puesto y Departamento
+            e.setDepartamento(rs.getInt("departamento"));
+            e.setPuesto(rs.getInt("puesto"));
+
+            // ✅ Datos numéricos
+            e.setSalario(rs.getDouble("salario"));
+
+            // ✅ Manejo seguro de las horas (evita errores de tipo)
+            java.sql.Time entrada = rs.getTime("horaIngreso");
+            java.sql.Time salida = rs.getTime("horaEgreso");
+
+            e.setHoraEntrada(entrada != null ? entrada : java.sql.Time.valueOf("00:00:00"));
+            e.setHoraSalida(salida != null ? salida : java.sql.Time.valueOf("00:00:00"));
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "❌ Error al obtener empleado: " + ex.getMessage());
+        ex.printStackTrace();
+    }
+
+    return e;
+}
+
+    // ======== Actualizar empleado ========
+    public void actualizarEmpleado(Empleado e) {
+        String sql = "UPDATE empleados SET nombre=?, apellido=?, dpi=?, correo=?, telefono=?, direccion=?, "
+                   + "departamento=?, puesto=?, salario=?, horaIngreso=?, horaEgreso=? "
+                   + "WHERE codigoEmpleado=?";
+
+        try (Connection cx = ConexionBD.getInstancia().conectar();
+             PreparedStatement ps = cx.prepareStatement(sql)) {
+
+            ps.setString(1, e.getNombre());
+            ps.setString(2, e.getApellido());
+            ps.setString(3, e.getDpi());
+            ps.setString(4, e.getCorreo());
+            ps.setString(5, e.getTelefono());
+            ps.setString(6, e.getDireccion());
+            ps.setInt(7, e.getDepartamento());
+            ps.setInt(8, e.getPuesto());
+            ps.setDouble(9, e.getSalario());
+            ps.setTime(10, e.getHoraEntrada());
+            ps.setTime(11, e.getHoraSalida());
+            ps.setInt(12, e.getCodigoEmpleado());
+
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "✅ Empleado actualizado correctamente.");
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "❌ Error al actualizar: " + ex.getMessage());
         }
     }
     
-public DefaultTableModel TablaEmpleados() {
-    
-    String[] nombresColumnas = {"ID", "Nombre", "Apellido", "DPI", "Fecha de Nacimiento", "E-mail", "Teléfono", "Dirección", "Puesto", "Departamento", "Salario", "Horario de Ingreso", "Hora de Egreso", "Estado"};
-    DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
+   public static void registrarDespido(int codigoEmpleado, String motivo) {
+    String sqlEmpleado = "UPDATE empleados SET estado = 'Despedido' WHERE codigoEmpleado = ?";
+    String sqlDespido = "INSERT INTO despidos (codigoEmpleado, motivo, fechaDespido) VALUES (?, ?, NOW())";
 
-    String sql = "SELECT codigoEmpleado, nombre, apellido, DPI, fechaNacimiento, correo, telefono, direccion, puesto, departamento, salario, HoraIngreso, HoraEgreso, estado FROM empleados"; 
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps1 = cx.prepareStatement(sqlEmpleado);
+         PreparedStatement ps2 = cx.prepareStatement(sqlDespido)) {
 
-    try (Connection cx = ConexionBD.getInstancia().conectar();  
+        // 🔹 Actualizar estado del empleado
+        ps1.setInt(1, codigoEmpleado);
+        ps1.executeUpdate();
+
+        // 🔹 Registrar motivo del despido
+        ps2.setInt(1, codigoEmpleado);
+        ps2.setString(2, motivo);
+        ps2.executeUpdate();
+
+        JOptionPane.showMessageDialog(null, "✅ Empleado despedido correctamente.");
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "❌ Error al despedir empleado: " + ex.getMessage());
+        ex.printStackTrace();
+    }
+}
+   
+   //MOSTRAR EMPLEADOS ACTIVOS
+    public DefaultTableModel TablaEmpleados() {
+    // 🧱 Columnas de la tabla
+    String[] columnas = {
+        "ID", "Nombre", "Apellido", "DPI", "Fecha Nacimiento", "Correo",
+        "Teléfono", "Dirección", "Departamento", "Puesto", "Salario",
+        "Hora Ingreso", "Hora Egreso", "Estado"
+    };
+
+    DefaultTableModel modelo = new DefaultTableModel(null, columnas);
+
+    // 🔹 Consulta con JOIN para mostrar nombres reales
+  String sql = "SELECT e.codigoEmpleado, e.nombre, e.apellido, e.dpi, e.fechaNacimiento, "
+           + "e.correo, e.telefono, e.direccion, "
+           + "d.nombre AS departamento, p.nombre AS puesto, "
+           + "e.salario, e.horaIngreso, e.horaEgreso, e.estado "
+           + "FROM empleados e "
+           + "LEFT JOIN departamentos d ON e.departamento = d.codigoDepartamento "
+           + "LEFT JOIN puestos p ON e.puesto = p.codigoPuesto "
+           + "WHERE e.estado != 'Despedido'";
+
+    try (Connection cx = ConexionBD.getInstancia().conectar();
          PreparedStatement ps = cx.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) { 
+         ResultSet rs = ps.executeQuery()) {
 
         while (rs.next()) {
-            Object[] fila = new Object[14]; 
-            
-            fila[0] = rs.getInt("codigoEmpleado"); 
-            fila[1] = rs.getString("nombre"); 
-            fila[2] = rs.getString("apellido"); 
-            fila[3] = rs.getInt("DPI");
-            fila[4] = rs.getDate("fechaNacimiento");
+            Object[] fila = new Object[14];
+
+            fila[0] = rs.getInt("codigoEmpleado");
+            fila[1] = rs.getString("nombre");
+            fila[2] = rs.getString("apellido");
+            fila[3] = rs.getString("dpi");
+            String fechaStr = rs.getString("fechaNacimiento");
+java.sql.Date fechaNacimiento = null;
+
+try {
+    if (fechaStr != null && !fechaStr.isEmpty()) {
+        java.util.Date parsed = new java.text.SimpleDateFormat("dd/MM/yyyy").parse(fechaStr);
+        fechaNacimiento = new java.sql.Date(parsed.getTime());
+    }
+} catch (Exception ex) {
+    System.err.println("⚠️ No se pudo convertir la fecha: " + fechaStr);
+}
+
+fila[4] = fechaNacimiento;
             fila[5] = rs.getString("correo");
-            fila[6] = rs.getInt("telefono");
+            fila[6] = rs.getString("telefono");
             fila[7] = rs.getString("direccion");
-            fila[8] = rs.getString("puesto");
-            fila[9] = rs.getString("departamento");
+            fila[8] = rs.getString("departamento") != null ? rs.getString("departamento") : "Sin asignar";
+            fila[9] = rs.getString("puesto") != null ? rs.getString("puesto") : "Sin asignar";
             fila[10] = rs.getDouble("salario");
-            fila[11] = rs.getTime("HoraIngreso");
-            fila[12] = rs.getTime("HoraEgreso");
-            fila[13] = rs.getBoolean("estado") ? "Activo" : "Inactivo";
-            
+            fila[11] = rs.getTime("horaIngreso");
+            fila[12] = rs.getTime("horaEgreso");
+            fila[13] = rs.getString("estado");
+
             modelo.addRow(fila);
         }
 
     } catch (SQLException e) {
-        System.err.println("Error al cargar la tabla de empleados");
-        System.err.println("Mensaje: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "❌ Error al mostrar empleados: " + e.getMessage());
         e.printStackTrace();
-        return new DefaultTableModel(null, nombresColumnas);
     }
-    
+
     return modelo;
 }
-    
 }
