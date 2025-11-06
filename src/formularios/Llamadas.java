@@ -265,9 +265,34 @@ if (indiceGuion > 0) {
         nuevaLlamada.setTipo(jComboBoxTipo.getSelectedItem().toString());
 
         nuevaLlamada.setNota(jTextAreanota.getText());
+        
+        String duracionStr = jTextFieldDuracion1.getText(); 
+    int duracionTotalSegundos = 0;
 
-        String duracionStr = jTextFieldDuracion1.getText();
-        nuevaLlamada.setDuracion(Integer.parseInt(duracionStr));
+    try {
+        
+        if (!duracionStr.isEmpty()) {
+            String[] partes = duracionStr.split(":");
+            if (partes.length == 3) {
+         
+                int h = Integer.parseInt(partes[0].replaceAll("[^0-9]", ""));
+             
+                int m = Integer.parseInt(partes[1].replaceAll("[^0-9]", ""));
+            
+                int s = Integer.parseInt(partes[2].replaceAll("[^0-9]", ""));
+                
+                duracionTotalSegundos = (h * 3600) + (m * 60) + s;
+            } else {
+               
+                throw new NumberFormatException("Formato de duración del cronómetro inválido: " + duracionStr);
+            }
+        }
+    } catch (NumberFormatException e) {
+        System.err.println("Error al parsear la duración del cronómetro. Se guardará 0. Detalle: " + e.getMessage());
+        duracionTotalSegundos = 0; 
+    }
+    
+        nuevaLlamada.setDuracion(duracionTotalSegundos);
         
         nuevaLlamada.setFecha_hora(LocalDateTime.now());
         
@@ -316,8 +341,8 @@ if (indiceGuion > 0) {
 
     private void jButtonCronoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCronoActionPerformed
 
-        crono cr= new crono();
-        cr.setVisible(true);
+    crono cr = new crono(jTextFieldDuracion1);
+    cr.setVisible(true);
         
     }//GEN-LAST:event_jButtonCronoActionPerformed
 

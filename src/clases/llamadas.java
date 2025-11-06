@@ -124,7 +124,7 @@ public class llamadas {
             + "Tipo de llamada: " + llamada.getTipo() + "\n"
             + "Nota de la llamada: " + llamada.getNota() + "\n"
     
-            + "Duracion: " + llamada.getDuracion() + "\n"
+            + "Duracion (segundos): " + llamada.getDuracion() + "\n"
             + "Fecha y hora" + llamada.getFecha_hora();
     
     int opcion = JOptionPane.showConfirmDialog(

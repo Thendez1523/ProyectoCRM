@@ -2,18 +2,21 @@ package formularios;
 
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 
 public class crono extends javax.swing.JFrame {
 
     private Timer mTimer;
+    private JTextField campoDuracionLlamadas;
  
     private int horas = 0;
     private int minutos = 0;
     private int segundos = 0;
     private int milisegundos = 0;
     
-    public crono() {
+    public crono(JTextField campo) {
+        this.campoDuracionLlamadas = campo;
         initComponents();
         
         mTimer = new Timer(10, (ActionEvent e) -> {
@@ -45,8 +48,14 @@ public class crono extends javax.swing.JFrame {
     
         private void ActualizarCrono() {
         String cronometro = horas + "h:" + minutos + "m:" + segundos + "s";
+        
         jLabelcrono.setText(cronometro);
         jLabelmili.setText("." + String.format("%02d", milisegundos));
+        
+        if (campoDuracionLlamadas != null) {
+        campoDuracionLlamadas.setText(cronometro); 
+        }
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -83,7 +92,7 @@ public class crono extends javax.swing.JFrame {
         });
 
         jLabelcrono.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabelcrono.setText("0d: 0h: 0m: 0s");
+        jLabelcrono.setText("0h: 0m: 0s");
 
         jLabelmili.setText(".000");
 
@@ -104,7 +113,7 @@ public class crono extends javax.swing.JFrame {
                         .addComponent(jLabelcrono)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelmili)))
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +193,7 @@ public class crono extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new crono().setVisible(true);
+                new Llamadas().setVisible(true);
             }
         });
     }

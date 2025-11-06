@@ -39,7 +39,7 @@
                       <Component id="jLabelmili" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="132" max="32767" attributes="0"/>
+              <EmptySpace pref="148" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -92,7 +92,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="36" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="0d: 0h: 0m: 0s"/>
+        <Property name="text" type="java.lang.String" value="0h: 0m: 0s"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelmili">
