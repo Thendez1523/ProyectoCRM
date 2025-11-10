@@ -207,4 +207,49 @@ public class Cliente extends Persona {
             JOptionPane.showMessageDialog(null, "❌ Error al cargar clientes: " + ex.getMessage());
         }
     }
+    
+    // ================== ELIMINAR CLIENTE ================== //
+public void eliminarCliente(int codigoCliente) {
+
+    int opcion = JOptionPane.showConfirmDialog(
+            null,
+            "¿Seguro que desea eliminar este cliente?\n\nCódigo: " + codigoCliente,
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+    );
+
+    if (opcion == JOptionPane.YES_OPTION) {
+        String sql = "DELETE FROM cliente WHERE codigoCliente = ?";
+
+        try (Connection cx = ConexionBD.getInstancia().conectar();
+             PreparedStatement ps = cx.prepareStatement(sql)) {
+
+            ps.setInt(1, codigoCliente);
+
+            int filas = ps.executeUpdate();
+
+            if (filas > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "✅ Cliente eliminado correctamente.",
+                        "Eliminación exitosa",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "⚠ No se encontró el cliente a eliminar.",
+                        "Sin cambios",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,
+                    "❌ Error al eliminar cliente: " + ex.getMessage(),
+                    "Error SQL",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "❌ Eliminación cancelada.");
+    }
+}
+
 }

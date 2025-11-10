@@ -45,7 +45,6 @@ public class Clientes extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jDateChooserFechaNacimientoCliente = new com.toedter.calendar.JDateChooser();
         jLabel6 = new javax.swing.JLabel();
@@ -113,14 +112,6 @@ public class Clientes extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Tipo de cliente:");
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton2.setText("Actualizar Datos");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setText("Número de telefono:");
 
@@ -130,12 +121,6 @@ public class Clientes extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonIngresarClientes)
-                .addGap(78, 78, 78)
-                .addComponent(jButton2)
-                .addGap(157, 157, 157))
             .addGroup(layout.createSequentialGroup()
                 .addGap(83, 83, 83)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,6 +157,10 @@ public class Clientes extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
                                 .addComponent(jTextFieldNitCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(57, 57, 57))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(234, 234, 234)
+                .addComponent(jButtonIngresarClientes)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,11 +204,9 @@ public class Clientes extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addGap(18, 18, 18)
                         .addComponent(jDateChooserFechaNacimientoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButtonIngresarClientes))
-                .addGap(56, 56, 56))
+                .addGap(85, 85, 85)
+                .addComponent(jButtonIngresarClientes)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -240,11 +227,6 @@ public class Clientes extends javax.swing.JFrame {
     private void jTextFieldNitClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNitClienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNitClienteActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ActualizarClientes ac=new ActualizarClientes();
-        ac.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButtonIngresarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIngresarClientesActionPerformed
        
@@ -311,7 +293,6 @@ public class Clientes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonIngresarClientes;
     private javax.swing.JComboBox<String> jComboBoxTipoCliente;
     private com.toedter.calendar.JDateChooser jDateChooserFechaNacimientoCliente;

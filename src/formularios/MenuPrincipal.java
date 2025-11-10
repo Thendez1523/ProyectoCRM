@@ -55,6 +55,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItemRegistroCliente = new javax.swing.JMenuItem();
         jMenuItemActualizarCliente = new javax.swing.JMenuItem();
         jMenuItemVisualizarClientes = new javax.swing.JMenuItem();
+        jMenuItemEliminarCliente = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItemRegistroEmpleado = new javax.swing.JMenuItem();
         jMenuItemActualizarEmpleado = new javax.swing.JMenuItem();
@@ -197,6 +198,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItemVisualizarClientes);
+
+        jMenuItemEliminarCliente.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItemEliminarCliente.setText("Eliminar cliente ");
+        jMenuItemEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEliminarClienteActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemEliminarCliente);
 
         jMenuBar1.add(jMenu1);
 
@@ -496,6 +506,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItemActualizarCategoriaActionPerformed
 
+    private void jMenuItemEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminarClienteActionPerformed
+        EliminarCliente ec = new EliminarCliente ();
+        ec.setVisible (true);
+    }//GEN-LAST:event_jMenuItemEliminarClienteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -563,6 +578,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCrearReporte;
     private javax.swing.JMenuItem jMenuItemCrearVenta;
     private javax.swing.JMenuItem jMenuItemDespidoEmpleado;
+    private javax.swing.JMenuItem jMenuItemEliminarCliente;
     private javax.swing.JMenuItem jMenuItemEstadoReporte;
     private javax.swing.JMenuItem jMenuItemEstadoVentas;
     private javax.swing.JMenuItem jMenuItemHistorialLlamadas;
