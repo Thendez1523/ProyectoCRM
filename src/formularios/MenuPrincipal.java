@@ -5,6 +5,8 @@
 package formularios;
 
 import clases.ConexionBD;
+import clases.Login;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,13 +33,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jLabel3 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu6 = new javax.swing.JMenu();
@@ -47,7 +42,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItemContratarServicio = new javax.swing.JMenuItem();
         jMenuItemCancelarServicio = new javax.swing.JMenuItem();
         jMenuItemVisualizarServiciosVigentes = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItemIniciarLLamada = new javax.swing.JMenuItem();
         jMenuItemHistorialLlamadas = new javax.swing.JMenuItem();
@@ -65,26 +59,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenuItemAgregarProductoServicio = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItemVisualizarProductoServicio = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
         jMenuItemCrearReporte = new javax.swing.JMenuItem();
         jMenuItemEstadoReporte = new javax.swing.JMenuItem();
         jMenuItemVisualizarReporte = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
         jMenuItemAgregarCategoria = new javax.swing.JMenuItem();
-        jMenuItemActualizarCategoria = new javax.swing.JMenuItem();
+        jMenuItemAgregarDepartamentosPuestos = new javax.swing.JMenuItem();
+        jMenuItemAgregarUsuario = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu Principal");
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Inicia Sesión");
-
-        jLabel2.setText("Codigo Empleado");
-
-        jLabel3.setText("Contraseña");
-
-        jButton1.setText("Iniciar Sesión");
-
-        jButton2.setText("Olvide mi contraseña");
 
         jMenu6.setText("Ventas");
 
@@ -141,10 +126,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu6.add(jMenuItemVisualizarServiciosVigentes);
-
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
-        jMenuItem2.setText("Reporte de Pagos");
-        jMenu6.add(jMenuItem2);
 
         jMenuBar1.add(jMenu6);
 
@@ -281,7 +262,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("Operaciones");
+        jMenu5.setText("Reportes");
 
         jMenuItemCrearReporte.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         jMenuItemCrearReporte.setText("Crear Reporte");
@@ -290,7 +271,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 jMenuItemCrearReporteActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItemCrearReporte);
+        jMenu5.add(jMenuItemCrearReporte);
 
         jMenuItemEstadoReporte.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         jMenuItemEstadoReporte.setText("Estado Reporte");
@@ -299,7 +280,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 jMenuItemEstadoReporteActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItemEstadoReporte);
+        jMenu5.add(jMenuItemEstadoReporte);
 
         jMenuItemVisualizarReporte.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         jMenuItemVisualizarReporte.setText("Visualizar Reporte");
@@ -308,7 +289,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 jMenuItemVisualizarReporteActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItemVisualizarReporte);
+        jMenu5.add(jMenuItemVisualizarReporte);
+
+        jMenuBar1.add(jMenu5);
+
+        jMenu4.setText("Operaciones");
 
         jMenuItemAgregarCategoria.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         jMenuItemAgregarCategoria.setText("Agregar Categoria");
@@ -319,14 +304,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItemAgregarCategoria);
 
-        jMenuItemActualizarCategoria.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        jMenuItemActualizarCategoria.setText("Actualizar Categoria");
-        jMenuItemActualizarCategoria.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemAgregarDepartamentosPuestos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        jMenuItemAgregarDepartamentosPuestos.setText("Agregar Departamentos y Puestos");
+        jMenuItemAgregarDepartamentosPuestos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemActualizarCategoriaActionPerformed(evt);
+                jMenuItemAgregarDepartamentosPuestosActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItemActualizarCategoria);
+        jMenu4.add(jMenuItemAgregarDepartamentosPuestos);
+
+        jMenuItemAgregarUsuario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F11, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
+        jMenuItemAgregarUsuario.setText("Agregar Usuario (Inicio Sesion)");
+        jMenuItemAgregarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAgregarUsuarioActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItemAgregarUsuario);
 
         jMenuBar1.add(jMenu4);
 
@@ -337,53 +331,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(292, 292, 292)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addGap(48, 48, 48)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                            .addComponent(jFormattedTextField1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(393, 393, 393)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(963, Short.MAX_VALUE)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(310, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(89, 89, 89)
-                .addComponent(jButton1)
-                .addGap(346, 346, 346))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(83, 83, 83))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addGap(73, 73, 73)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(66, 66, 66)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(151, Short.MAX_VALUE))
+                .addGap(95, 95, 95)
+                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(395, Short.MAX_VALUE))
         );
 
         pack();
@@ -444,8 +401,27 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemActualizarEmpleadoActionPerformed
 
     private void jMenuItemDespidoEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDespidoEmpleadoActionPerformed
-        DespidoEmpleado de = new DespidoEmpleado();
+        if (Login.haySesionActiva()) {
+
+    String tipoUsuario = Login.getSesionActiva().getTipo();
+
+    if ("Admin".equalsIgnoreCase(tipoUsuario)) {
+   DespidoEmpleado de = new DespidoEmpleado();
         de.setVisible(true);
+    } else {
+                JOptionPane.showMessageDialog(this,
+                " Acceso denegado. Solo los administradores pueden acceder a esta sección.",
+                "Permiso denegado",
+                JOptionPane.WARNING_MESSAGE);
+    }
+} else {
+    JOptionPane.showMessageDialog(this,
+            "⚠️ No hay una sesión activa. Inicie sesión para continuar.",
+            "Sesión requerida",
+            JOptionPane.ERROR_MESSAGE);
+}
+
+       
     }//GEN-LAST:event_jMenuItemDespidoEmpleadoActionPerformed
 
     private void jMenuItemVisualizarEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVisualizarEmpleadosActionPerformed
@@ -499,17 +475,81 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemVisualizarReporteActionPerformed
 
     private void jMenuItemAgregarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarCategoriaActionPerformed
-        
-    }//GEN-LAST:event_jMenuItemAgregarCategoriaActionPerformed
+       
+if (Login.haySesionActiva()) {
 
-    private void jMenuItemActualizarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemActualizarCategoriaActionPerformed
-        
-    }//GEN-LAST:event_jMenuItemActualizarCategoriaActionPerformed
+    String tipoUsuario = Login.getSesionActiva().getTipo();
+
+    if ("Admin".equalsIgnoreCase(tipoUsuario)) {
+        Categorias cat = new Categorias();
+        cat.setVisible(true);
+    } else {
+                JOptionPane.showMessageDialog(this,
+                " Acceso denegado. Solo los administradores pueden acceder a esta sección.",
+                "Permiso denegado",
+                JOptionPane.WARNING_MESSAGE);
+    }
+} else {
+    JOptionPane.showMessageDialog(this,
+            "⚠️ No hay una sesión activa. Inicie sesión para continuar.",
+            "Sesión requerida",
+            JOptionPane.ERROR_MESSAGE);
+}
+
+    }//GEN-LAST:event_jMenuItemAgregarCategoriaActionPerformed
 
     private void jMenuItemEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEliminarClienteActionPerformed
         EliminarCliente ec = new EliminarCliente ();
         ec.setVisible (true);
     }//GEN-LAST:event_jMenuItemEliminarClienteActionPerformed
+
+    private void jMenuItemAgregarDepartamentosPuestosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarDepartamentosPuestosActionPerformed
+        if (Login.haySesionActiva()) {
+
+    String tipoUsuario = Login.getSesionActiva().getTipo();
+
+    if ("Admin".equalsIgnoreCase(tipoUsuario)) {
+        DepartamentosYPuestos dp = new DepartamentosYPuestos ();
+        dp.setVisible (true);
+    } else {
+                JOptionPane.showMessageDialog(this,
+                " Acceso denegado. Solo los administradores pueden acceder a esta sección.",
+                "Permiso denegado",
+                JOptionPane.WARNING_MESSAGE);
+    }
+} else {
+    JOptionPane.showMessageDialog(this,
+            "⚠️ No hay una sesión activa. Inicie sesión para continuar.",
+            "Sesión requerida",
+            JOptionPane.ERROR_MESSAGE);
+}
+        
+        
+    }//GEN-LAST:event_jMenuItemAgregarDepartamentosPuestosActionPerformed
+
+    private void jMenuItemAgregarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarUsuarioActionPerformed
+         if (Login.haySesionActiva()) {
+
+    String tipoUsuario = Login.getSesionActiva().getTipo();
+
+    if ("Admin".equalsIgnoreCase(tipoUsuario)) {
+        AgregarUsuario ag = new AgregarUsuario();
+        ag.setVisible(true);
+    } else {
+                JOptionPane.showMessageDialog(this,
+                " Acceso denegado. Solo los administradores pueden acceder a esta sección.",
+                "Permiso denegado",
+                JOptionPane.WARNING_MESSAGE);
+    }
+} else {
+    JOptionPane.showMessageDialog(this,
+            "⚠️ No hay una sesión activa. Inicie sesión para continuar.",
+            "Sesión requerida",
+            JOptionPane.ERROR_MESSAGE);
+}
+        
+        
+    }//GEN-LAST:event_jMenuItemAgregarUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -553,26 +593,21 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItemActualizarCategoria;
     private javax.swing.JMenuItem jMenuItemActualizarCliente;
     private javax.swing.JMenuItem jMenuItemActualizarEmpleado;
     private javax.swing.JMenuItem jMenuItemAgregarCategoria;
+    private javax.swing.JMenuItem jMenuItemAgregarDepartamentosPuestos;
     private javax.swing.JMenuItem jMenuItemAgregarProductoServicio;
+    private javax.swing.JMenuItem jMenuItemAgregarUsuario;
     private javax.swing.JMenuItem jMenuItemCancelarServicio;
     private javax.swing.JMenuItem jMenuItemContratarServicio;
     private javax.swing.JMenuItem jMenuItemCrearReporte;
@@ -591,6 +626,5 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemVisualizarReporte;
     private javax.swing.JMenuItem jMenuItemVisualizarServiciosVigentes;
     private javax.swing.JMenuItem jMenuItemVisualizarVentas;
-    private javax.swing.JPasswordField jPasswordField1;
     // End of variables declaration//GEN-END:variables
 }

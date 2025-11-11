@@ -2,7 +2,7 @@ package formularios;
 
 import clases.Departamento;
 import clases.Empleado;
-import clases.Puestos;
+import clases.Puesto;
 import javax.swing.JOptionPane;
 import java.sql.Time;
 
@@ -21,7 +21,7 @@ public class Empleados extends javax.swing.JFrame {
         Departamento seleccionado = (Departamento) jComboBoxDepartamento.getSelectedItem();
         if (seleccionado != null) {
             int codigoDepto = seleccionado.getCodigoDepartamento();
-            Puestos.comboPuestosPorDepartamento(jComboBoxPuesto, codigoDepto);
+            Puesto.comboPuestosPorDepartamento(jComboBoxPuesto, codigoDepto);
         } else {
             jComboBoxPuesto.removeAllItems(); // limpiar si no hay selección
         }
@@ -72,7 +72,7 @@ public class Empleados extends javax.swing.JFrame {
 
         jLabel12.setText("Puesto");
 
-        jComboBoxPuesto.setModel(new javax.swing.DefaultComboBoxModel<Puestos>());
+        jComboBoxPuesto.setModel(new javax.swing.DefaultComboBoxModel<Puesto>());
 
         jLabel13.setText("Salario");
 
@@ -250,7 +250,7 @@ public class Empleados extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 Departamento depto = (Departamento) jComboBoxDepartamento.getSelectedItem();
-Puestos puesto = (Puestos) jComboBoxPuesto.getSelectedItem();
+Puesto puesto = (Puesto) jComboBoxPuesto.getSelectedItem();
 
 try {
     // Validar que se hayan seleccionado departamento y puesto
@@ -381,7 +381,7 @@ try {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<Departamento> jComboBoxDepartamento;
-    private javax.swing.JComboBox<Puestos> jComboBoxPuesto;
+    private javax.swing.JComboBox<Puesto> jComboBoxPuesto;
     private com.toedter.calendar.JDateChooser jDateChooserFechaNac;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;

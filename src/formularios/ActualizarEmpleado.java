@@ -6,7 +6,7 @@ package formularios;
 
 import clases.Departamento;
 import clases.Empleado;
-import clases.Puestos;
+import clases.Puesto;
 import javax.swing.JOptionPane;
 import java.sql.Time;
 
@@ -30,7 +30,7 @@ public class ActualizarEmpleado extends javax.swing.JFrame {
         jComboBoxDepartamento.addActionListener(e -> {
             Departamento seleccionado = (Departamento) jComboBoxDepartamento.getSelectedItem();
             if (seleccionado != null) {
-                Puestos.comboPuestosPorDepartamento(jComboBoxPuesto, seleccionado.getCodigoDepartamento());
+                Puesto.comboPuestosPorDepartamento(jComboBoxPuesto, seleccionado.getCodigoDepartamento());
             }
         });
 
@@ -67,14 +67,14 @@ public class ActualizarEmpleado extends javax.swing.JFrame {
             Departamento d = (Departamento) jComboBoxDepartamento.getItemAt(i);
             if (d.getCodigoDepartamento() == emp.getDepartamento()) {
                 jComboBoxDepartamento.setSelectedIndex(i);
-                Puestos.comboPuestosPorDepartamento(jComboBoxPuesto, d.getCodigoDepartamento());
+                Puesto.comboPuestosPorDepartamento(jComboBoxPuesto, d.getCodigoDepartamento());
                 break;
             }
         }
 
         // ✅ Seleccionar puesto
         for (int i = 0; i < jComboBoxPuesto.getItemCount(); i++) {
-            Puestos p = (Puestos) jComboBoxPuesto.getItemAt(i);
+            Puesto p = (Puesto) jComboBoxPuesto.getItemAt(i);
             if (p.getCodigoPuesto() == emp.getPuesto()) {
                 jComboBoxPuesto.setSelectedIndex(i);
                 break;
@@ -157,7 +157,7 @@ public class ActualizarEmpleado extends javax.swing.JFrame {
 
         jLabel12.setText("Puesto");
 
-        jComboBoxPuesto.setModel(new javax.swing.DefaultComboBoxModel<Puestos>());
+        jComboBoxPuesto.setModel(new javax.swing.DefaultComboBoxModel<Puesto>());
 
         jLabel8.setText("Telefono");
 
@@ -182,6 +182,11 @@ public class ActualizarEmpleado extends javax.swing.JFrame {
         jLabelDPI.setText(".");
 
         jComboBoxEmpleados.setModel(new javax.swing.DefaultComboBoxModel<Empleado>());
+        jComboBoxEmpleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxEmpleadosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -335,7 +340,7 @@ public class ActualizarEmpleado extends javax.swing.JFrame {
         emp.setHoraEntrada(Time.valueOf(jTextFieldHoraEntrada.getText()));
         emp.setHoraSalida(Time.valueOf(jTextFieldHoraSalida.getText()));
         emp.setDepartamento(((Departamento) jComboBoxDepartamento.getSelectedItem()).getCodigoDepartamento());
-        emp.setPuesto(((Puestos) jComboBoxPuesto.getSelectedItem()).getCodigoPuesto());
+        emp.setPuesto(((Puesto) jComboBoxPuesto.getSelectedItem()).getCodigoPuesto());
 
         emp.actualizarEmpleado(emp);
 
@@ -343,6 +348,10 @@ public class ActualizarEmpleado extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "⚠️ Error al actualizar: " + ex.getMessage());
     }
     }//GEN-LAST:event_jButtonGuardarCambiosActionPerformed
+
+    private void jComboBoxEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEmpleadosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxEmpleadosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -359,7 +368,7 @@ public class ActualizarEmpleado extends javax.swing.JFrame {
     private javax.swing.JButton jButtonGuardarCambios;
     private javax.swing.JComboBox<Departamento> jComboBoxDepartamento;
     private javax.swing.JComboBox<Empleado> jComboBoxEmpleados;
-    private javax.swing.JComboBox<Puestos> jComboBoxPuesto;
+    private javax.swing.JComboBox<Puesto> jComboBoxPuesto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

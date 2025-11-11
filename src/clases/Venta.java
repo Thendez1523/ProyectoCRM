@@ -415,65 +415,62 @@ public class Venta {
     /**
      * Muestra ventas detalladas con productos
      */
-    public void mostrarVentasDetalladas(JTable tabla) {
-        String[] columnas = {
-            "Código Detalle", "No. Venta", "Cliente", "Producto", 
-            "Cantidad", "Precio Unitario", "Subtotal", "Fecha Venta"
-        };
-        
-        DefaultTableModel modelo = new DefaultTableModel(null, columnas) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+    public void mostrarDetallesPorVenta(JTable tabla, int codigoVenta) {
+    String[] columnas = {
+        "Código Detalle", "Producto", "Cantidad", 
+        "Precio Unitario", "Subtotal"
+    };
+
+    DefaultTableModel modelo = new DefaultTableModel(null, columnas) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            switch (columnIndex) {
+                case 0: return Integer.class;
+                case 2: return Integer.class;
+                case 3: return Double.class;
+                case 4: return Double.class;
+                default: return String.class;
             }
-            
-            @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                switch (columnIndex) {
-                    case 0: return Integer.class;
-                    case 1: return Integer.class;
-                    case 4: return Integer.class;
-                    case 5: return Double.class;
-                    case 6: return Double.class;
-                    case 7: return Date.class;
-                    default: return String.class;
-                }
-            }
-        };
-        
-        String sql = "SELECT dv.codigoDetalle, v.codigoVenta, " +
-                     "CONCAT(c.nombre, ' ', c.apellido) as nombreCliente, " +
-                     "p.nombre as nombreProducto, dv.cantidad, " +
-                     "dv.precioIndividual, dv.subtotal, v.fechaVenta " +
-                     "FROM detalleVenta dv " +
-                     "INNER JOIN venta v ON dv.codigoVenta = v.codigoVenta " +
-                     "INNER JOIN producto p ON dv.codigoProducto = p.codigoProducto " +
-                     "INNER JOIN cliente c ON v.codigoCliente = c.codigoCliente " +
-                     "ORDER BY v.fechaVenta DESC, v.codigoVenta DESC";
-        
-        try (Connection cx = ConexionBD.getInstancia().conectar();
-             PreparedStatement ps = cx.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            
+        }
+    };
+
+    String sql = """
+        SELECT dv.codigoDetalle, p.nombre AS nombreProducto, 
+               dv.cantidad, dv.precioIndividual, dv.subtotal
+        FROM detalleVenta dv
+        INNER JOIN producto p ON dv.codigoProducto = p.codigoProducto
+        WHERE dv.codigoVenta = ?
+        ORDER BY dv.codigoDetalle ASC
+    """;
+
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql)) {
+
+        ps.setInt(1, codigoVenta);
+        try (ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Object[] fila = new Object[columnas.length];
                 fila[0] = rs.getInt("codigoDetalle");
-                fila[1] = rs.getInt("codigoVenta");
-                fila[2] = rs.getString("nombreCliente");
-                fila[3] = rs.getString("nombreProducto");
-                fila[4] = rs.getInt("cantidad");
-                fila[5] = rs.getDouble("precioIndividual");
-                fila[6] = rs.getDouble("subtotal");
-                fila[7] = rs.getTimestamp("fechaVenta");
+                fila[1] = rs.getString("nombreProducto");
+                fila[2] = rs.getInt("cantidad");
+                fila[3] = rs.getDouble("precioIndividual");
+                fila[4] = rs.getDouble("subtotal");
                 modelo.addRow(fila);
             }
-            
-            tabla.setModel(modelo);
-            
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "❌ Error al cargar ventas detalladas: " + ex.getMessage());
         }
-    } 
+
+        tabla.setModel(modelo);
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "❌ Error al cargar detalles: " + ex.getMessage());
+    }
+}
+
     
     //MOSTRAR VENTA COMPLETA
       

@@ -3,12 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/clases/ConexionBD.java</file>
-            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/clases/Cliente.java</file>
-            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/formularios/EliminarCliente.java</file>
-            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/formularios/ActualizarClientes.java</file>
-            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/formularios/Clientes.java</file>
-            <file>file:/C:/Users/ACER/Desktop/proyecto%20progra/ProyectoCRM/src/formularios/MenuPrincipal.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/Llamadas.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/MenuPrincipal.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/ProductoServicio.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/Ventas.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/VisualizarClientes.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/VisualizarContrataciones.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/VisualizarEmpleados.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/VisualizarProductosServicios.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/VisualizarReportes.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/VisualizarVentas.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/formularios/crono.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/clases/Venta.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/clases/llamadas.java</file>
+            <file>file:/C:/Users/canom/OneDrive/Escritorio/ProyectoCRM-main/src/clases/Departamento.java</file>
         </group>
     </open-files>
 </project-private>

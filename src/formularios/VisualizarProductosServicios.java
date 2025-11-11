@@ -32,6 +32,7 @@ public class VisualizarProductosServicios extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Visualizar Productos y Servicios");
 
         jLabel1.setText("Visualizar producto/servicio");
 

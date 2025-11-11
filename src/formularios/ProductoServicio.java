@@ -41,6 +41,7 @@ public class ProductoServicio extends javax.swing.JFrame {
         jTextField6 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Registrar Producto O Servicio");
 
         jLabel1.setText("Registrar Nuevo Producto o Servicio");
 

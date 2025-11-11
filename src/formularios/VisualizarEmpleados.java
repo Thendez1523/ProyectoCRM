@@ -31,6 +31,7 @@ public class VisualizarEmpleados extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Visualizar Empledos");
 
         jLabel1.setText("Registro de Empleados");
 
@@ -42,7 +43,7 @@ public class VisualizarEmpleados extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Apellido", "DPI", "Fecha de Nacimiento", "E-mail", "Teléfono", "Dirección", "Puesto", "Departamento", "Salario", "Horario de Ingreso", "Hora de Egreso", "Estado"
+                "Codigo", "Nombre", "Apellido", "DPI", "Fecha de Nacimiento", "E-mail", "Teléfono", "Dirección", "Puesto", "Departamento", "Salario", "Horario de Ingreso", "Hora de Egreso", "Estado"
             }
         ));
         jScrollPane1.setViewportView(jTable1);

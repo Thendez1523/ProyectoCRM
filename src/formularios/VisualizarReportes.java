@@ -45,6 +45,7 @@ public VisualizarReportes() {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Visualizar Reportes Iniciados");
 
         jLabel1.setText("Visualizar Reportes Iniciado");
 

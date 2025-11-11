@@ -5,6 +5,8 @@
 package formularios;
 
 import clases.Cliente;
+import clases.Empleado;
+import clases.Login;
 import clases.ServicioProducto;
 import clases.Venta;
 import javax.swing.DefaultComboBoxModel;
@@ -50,7 +52,6 @@ public class Ventas extends javax.swing.JFrame {
         jTextFieldTelefonoContacto = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jFormattedTextFieldCodigoEmpleado = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -76,6 +77,7 @@ public class Ventas extends javax.swing.JFrame {
         jLabelNombreCliente = new javax.swing.JLabel();
         jLabelNombreProducto = new javax.swing.JLabel();
         jLabelCategoriaProducto = new javax.swing.JLabel();
+        jComboBoxCodigoEmpleado = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Agregar Nueva Venta");
@@ -167,6 +169,8 @@ public class Ventas extends javax.swing.JFrame {
 
         jLabelCategoriaProducto.setText(".");
 
+        jComboBoxCodigoEmpleado.setModel(new javax.swing.DefaultComboBoxModel<Empleado>());
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -227,12 +231,13 @@ public class Ventas extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel6)
                                             .addComponent(jLabel12))
-                                        .addGap(28, 28, 28)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jFormattedTextFieldCodigoEmpleado)
-                                                .addGap(295, 295, 295)))))))
+                                                .addGap(28, 28, 28)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addGap(42, 42, 42)
+                                                .addComponent(jComboBoxCodigoEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(43, 43, 43))
@@ -288,7 +293,7 @@ public class Ventas extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jFormattedTextFieldCodigoEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxCodigoEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -314,6 +319,8 @@ public class Ventas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void configurarEventos() {
+  Cliente.comboCliente(jComboBoxClientes);
+
     // Evento para cliente seleccionado
     jComboBoxClientes.addActionListener(e -> {
         Cliente seleccionado = (Cliente) jComboBoxClientes.getSelectedItem();
@@ -324,7 +331,35 @@ public class Ventas extends javax.swing.JFrame {
             jTextFieldDireccionVenta.setText(seleccionado.getDireccion());
         }
     });
-    
+
+    // 🧩 Cargar empleados en el combo
+    Empleado.comboEmpleados(jComboBoxCodigoEmpleado);
+
+    // ✅ Si hay sesión activa, seleccionar automáticamente al empleado logueado
+    if (Login.haySesionActiva()) {
+        int codigoActivo = Login.getSesionActiva().getCodigoEmpleado();
+
+        for (int i = 0; i < jComboBoxCodigoEmpleado.getItemCount(); i++) {
+            Empleado emp = (Empleado) jComboBoxCodigoEmpleado.getItemAt(i);
+            if (emp.getCodigoEmpleado() == codigoActivo) {
+                jComboBoxCodigoEmpleado.setSelectedIndex(i);
+               
+                break;
+            }
+        }
+    }
+
+    // Evento para mostrar los datos del empleado seleccionado
+    jComboBoxCodigoEmpleado.addActionListener(e -> {
+        Empleado seleccionado = (Empleado) jComboBoxCodigoEmpleado.getSelectedItem();
+        if (seleccionado != null) {
+            
+        }
+    });
+
+    // 🧩 Cargar productos en el combo
+    ServicioProducto.comboProductos(jComboBoxProductos);
+
     // Evento para producto seleccionado
     jComboBoxProductos.addActionListener(e -> {
         ServicioProducto seleccionado = (ServicioProducto) jComboBoxProductos.getSelectedItem();
@@ -334,10 +369,10 @@ public class Ventas extends javax.swing.JFrame {
             jTextFieldPrecioProducto.setText(String.valueOf(seleccionado.getPrecio()));
         }
     });
-    
+
     // Evento para actualizar total cuando cambia la tabla
     jTableProductos.getModel().addTableModelListener(e -> actualizarTotalVenta());
-    
+
     // Evento para el botón limpiar
     jButton3.addActionListener(e -> limpiarFormulario());
 }
@@ -406,51 +441,59 @@ public class Ventas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAgregarProductoActionPerformed
 
     private void jButtonGenerarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarVentaActionPerformed
- // Validaciones
-    if (jTableProductos.getModel().getRowCount() == 0) {
-        JOptionPane.showMessageDialog(this, "❌ Debe agregar al menos un producto", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+ if (jTableProductos.getModel().getRowCount() == 0) {
+    JOptionPane.showMessageDialog(this, "❌ Debe agregar al menos un producto", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
 
-    Cliente clienteSeleccionado = (Cliente) jComboBoxClientes.getSelectedItem();
-    if (clienteSeleccionado == null) {
-        JOptionPane.showMessageDialog(this, "❌ Debe seleccionar un cliente", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+Cliente clienteSeleccionado = (Cliente) jComboBoxClientes.getSelectedItem();
+if (clienteSeleccionado == null) {
+    JOptionPane.showMessageDialog(this, "❌ Debe seleccionar un cliente", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
 
-    if (jFormattedTextFieldCodigoEmpleado.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "❌ Debe ingresar el código del empleado", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+// Verificar si hay sesión activa (empleado logueado)
+if (!Login.haySesionActiva()) {
+    JOptionPane.showMessageDialog(this, "⚠️ No hay ningún empleado con sesión activa.\nPor favor, inicie sesión nuevamente.", "Sesión no encontrada", JOptionPane.WARNING_MESSAGE);
+    return;
+}
 
-    try {
-        // Crear instancia de Venta
-        Venta venta = new Venta();
+try {
+    // 🔹 Obtener el empleado activo desde la sesión
+    int codigoEmpleadoActivo = Login.getSesionActiva().getCodigoEmpleado();
+
+    // 🔹 Crear instancia de Venta
+    Venta venta = new Venta();
+
+    // 🔹 Generar la venta con datos del formulario
+    int codigoVentaGenerada = venta.generarVenta(
+        clienteSeleccionado.getCodigoCliente(),
+        codigoEmpleadoActivo, // ✅ tomado de la sesión activa
+        jTextFieldDireccionVenta.getText().trim(),
+        jTextFieldTelefonoContacto.getText().trim(),
+        jTableProductos
+    );
+
+    // 🔹 Verificar resultado
+    if (codigoVentaGenerada > 0) {
+        JOptionPane.showMessageDialog(this, 
+            "✅ Venta registrada correctamente.\nCódigo de venta: " + codigoVentaGenerada,
+            "Éxito", JOptionPane.INFORMATION_MESSAGE);
         
-        // Generar la venta
-        int codigoVentaGenerada = venta.generarVenta(
-            clienteSeleccionado.getCodigoCliente(),
-            Integer.parseInt(jFormattedTextFieldCodigoEmpleado.getText().trim()),
-            jTextFieldDireccionVenta.getText(),
-            jTextFieldTelefonoContacto.getText(),
-            jTableProductos
-        );
-
-        if (codigoVentaGenerada > 0) {
-            // Éxito - limpiar formulario
-            limpiarFormulario();
-        }
-
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "❌ Código de empleado inválido", "Error", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "❌ Error inesperado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        limpiarFormulario(); // Limpia los campos del formulario
     }
+
+} catch (Exception ex) {
+    JOptionPane.showMessageDialog(this,
+        "❌ Error al registrar la venta:\n" + ex.getMessage(),
+        "Error", JOptionPane.ERROR_MESSAGE);
+    ex.printStackTrace();
+}
 }
 
 private void limpiarFormulario() {
     jComboBoxClientes.setSelectedIndex(-1);
-    jFormattedTextFieldCodigoEmpleado.setText("");
+    jComboBoxCodigoEmpleado.setSelectedIndex(-1);
     jTextAreaObservacionesProducto.setText("");
     jLabelNombreCliente.setText(".");
     jLabelNombreProducto.setText(".");
@@ -460,6 +503,10 @@ private void limpiarFormulario() {
     jTextFieldDireccionVenta.setText("");
     jTextFieldTelefonoContacto.setText("");
     jTextFieldCorreoContacto.setText("");
+    
+    javax.swing.table.DefaultTableModel modelo = 
+    (javax.swing.table.DefaultTableModel) jTableProductos.getModel();
+modelo.setRowCount(0); 
 
     }//GEN-LAST:event_jButtonGenerarVentaActionPerformed
 
@@ -512,8 +559,8 @@ private void limpiarFormulario() {
     private javax.swing.JButton jButtonGenerarVenta;
     private javax.swing.JButton jButtonRevisarDatos;
     private javax.swing.JComboBox<Cliente> jComboBoxClientes;
+    private javax.swing.JComboBox<Empleado> jComboBoxCodigoEmpleado;
     private javax.swing.JComboBox<ServicioProducto> jComboBoxProductos;
-    private javax.swing.JFormattedTextField jFormattedTextFieldCodigoEmpleado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

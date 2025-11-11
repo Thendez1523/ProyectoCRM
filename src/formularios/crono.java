@@ -69,6 +69,7 @@ public class crono extends javax.swing.JFrame {
         jLabelmili = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cronometro");
 
         jButtonIni.setText("Iniciar");
         jButtonIni.addActionListener(new java.awt.event.ActionListener() {

@@ -57,6 +57,7 @@ public class CancelarServicio extends javax.swing.JFrame {
         jLabelServicio = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cancelar Servicio");
 
         jLabel1.setText("Cancelar Servicio");
 

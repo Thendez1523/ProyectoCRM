@@ -34,6 +34,7 @@ public class VisualizarClientes extends javax.swing.JFrame {
         jButtonMostrarClientes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Visualizar Clientes");
 
         jLabel1.setText("Registro de Clientes");
 

@@ -89,6 +89,7 @@ public class ActualizarClientes extends javax.swing.JFrame {
         jComboBoxClienteSeleccionar = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Actualizar Datos Cliente");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Nombre:");

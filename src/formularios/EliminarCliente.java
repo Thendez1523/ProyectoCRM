@@ -47,7 +47,8 @@ public class EliminarCliente extends javax.swing.JFrame {
         jTextPaneMotivo = new javax.swing.JTextPane();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Eliminar Cliente");
 
         jComboBoxClientes.setModel(new javax.swing.DefaultComboBoxModel<Cliente>());
         jComboBoxClientes.addActionListener(new java.awt.event.ActionListener() {
