@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.time.LocalDateTime;
 import javax.swing.table.DefaultTableModel;
-
+import java.time.format.DateTimeFormatter;
 
 public class llamadas {
 
@@ -116,8 +116,12 @@ public class llamadas {
     
     
     //metodo donde se encuentra mi insert 
-    public void GuardarLLamada (llamadas llamada) {
-    String mensaje = "¿Desea guardar esta llamada con los siguientes datos?\n\n"
+    public boolean GuardarLLamada (llamadas llamada) {
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String fechaHoraFormateada = llamada.getFecha_hora().format(formatter);
+        
+        String mensaje = "¿Desea guardar esta llamada con los siguientes datos?\n\n"
             + "Codigo cliente: " + llamada.getCodigo_cliente() + "\n"
             + "Nombre de cliente: " + llamada.getNombre_cliente() + "\n"
             + "Codigo de empleado: " + llamada.getCodigo_empleado() + "\n"
@@ -125,7 +129,7 @@ public class llamadas {
             + "Nota de la llamada: " + llamada.getNota() + "\n"
     
             + "Duracion (segundos): " + llamada.getDuracion() + "\n"
-            + "Fecha y hora" + llamada.getFecha_hora();
+            + "Fecha y hora: " + fechaHoraFormateada    ;
     
     int opcion = JOptionPane.showConfirmDialog(
             null,
@@ -150,13 +154,21 @@ try (Connection cx = ConexionBD.getInstancia().conectar();
 
             ps.executeUpdate();
 
+            return true;
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al registrar la llamada: " + ex.getMessage());
         }
+        
+        return false;
+        
     } else {
         JOptionPane.showMessageDialog(null, "Registro cancelado.");
+            
+        return false;
     }
-}
+        
+    }
     
     //metodo donde se encuentra mi tabla y mi select
 public DefaultTableModel TablaLlamadas() {
@@ -193,6 +205,7 @@ public DefaultTableModel TablaLlamadas() {
        
         return new DefaultTableModel(null, nombresColumnas);
     }
+    
     
     return modelo;
 }
