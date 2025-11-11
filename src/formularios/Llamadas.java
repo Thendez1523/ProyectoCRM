@@ -7,15 +7,10 @@ import formularios.HistorialLlamadas;
 import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author MarcosCano
- */
+
 public class Llamadas extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Llamadas
-     */
+
     //aqui me muestra el combo box con los clientes
     public Llamadas() {
         initComponents();
@@ -40,6 +35,7 @@ public class Llamadas extends javax.swing.JFrame {
         
     }
   
+    //metodo para limpiar el formulario 
     
     private void limpiarFormulario() {
      
@@ -184,14 +180,14 @@ public class Llamadas extends javax.swing.JFrame {
                                 .addGap(113, 113, 113)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
+                                        .addGap(9, 9, 9)
                                         .addComponent(jButtonCrono)
                                         .addGap(18, 18, 18)
                                         .addComponent(jButton5)
                                         .addGap(18, 18, 18)
                                         .addComponent(jButton2))
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(114, Short.MAX_VALUE))))
+                        .addContainerGap(115, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,62 +243,67 @@ public class Llamadas extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        //boton donde almaceno todo lo que inserte en el formulario 
-    try {
-        
+        //boton de guardado
+try {
         llamadas nuevaLlamada = new llamadas();
-       
+        
 
-String itemCompleto = jComboBoxCodigoCliente.getSelectedItem().toString();
-int indiceGuion = itemCompleto.indexOf('-');
+        String itemClienteCompleto = jComboBoxCodigoCliente.getSelectedItem().toString();
+        int indiceGuion = itemClienteCompleto.indexOf('-');
 
-if (indiceGuion > 0) {
-    
-    String codigoClienteStr = itemCompleto.substring(0, indiceGuion).trim(); 
-    nuevaLlamada.setCodigo_cliente(Integer.parseInt(codigoClienteStr));
-} else {
-    
-    throw new NumberFormatException("El formato del código de cliente no es válido.");
-}
-
+        if (indiceGuion > 0) {
+            String codigoClienteStr = itemClienteCompleto.substring(0, indiceGuion).trim();
+            nuevaLlamada.setCodigo_cliente(Integer.parseInt(codigoClienteStr));
+        } else {
+            throw new NumberFormatException("El formato del código de cliente no es válido.");
+        }
+        
         nuevaLlamada.setNombre_cliente(jLabelNombreCliente.getText());
 
+        String itemEmpleadoCompleto = jComboBoxCodigoEmpleado.getSelectedItem().toString();
+        int indiceGuionEmpleado = itemEmpleadoCompleto.indexOf('-');
+
+        if (indiceGuionEmpleado > 0) {
+
+            String codigoEmpleadoStr = itemEmpleadoCompleto.substring(0, indiceGuionEmpleado).trim();
+
+            nuevaLlamada.setCodigo_empleado(Integer.parseInt(codigoEmpleadoStr)); 
+        } else {
+            throw new NumberFormatException("El formato del código de empleado no es válido o no se ha seleccionado.");
+        }
+        
         nuevaLlamada.setTipo(jComboBoxTipo.getSelectedItem().toString());
 
         nuevaLlamada.setNota(jTextAreanota.getText());
         
-        String duracionStr = jTextFieldDuracion1.getText(); 
-    int duracionTotalSegundos = 0;
+        String duracionStr = jTextFieldDuracion1.getText();
+        int duracionTotalSegundos = 0;
 
-    try {
-        
-        if (!duracionStr.isEmpty()) {
-            String[] partes = duracionStr.split(":");
-            if (partes.length == 3) {
-         
-                int h = Integer.parseInt(partes[0].replaceAll("[^0-9]", ""));
-             
-                int m = Integer.parseInt(partes[1].replaceAll("[^0-9]", ""));
-            
-                int s = Integer.parseInt(partes[2].replaceAll("[^0-9]", ""));
-                
-                duracionTotalSegundos = (h * 3600) + (m * 60) + s;
-            } else {
-               
-                throw new NumberFormatException("Formato de duración del cronómetro inválido: " + duracionStr);
+        try {
+            if (!duracionStr.isEmpty()) {
+                String[] partes = duracionStr.split(":");
+                if (partes.length == 3) {
+                    int h = Integer.parseInt(partes[0].replaceAll("[^0-9]", ""));
+                    int m = Integer.parseInt(partes[1].replaceAll("[^0-9]", ""));
+                    int s = Integer.parseInt(partes[2].replaceAll("[^0-9]", ""));
+                    
+                    duracionTotalSegundos = (h * 3600) + (m * 60) + s;
+                } else {
+                    throw new NumberFormatException("Formato de duración del cronómetro inválido: " + duracionStr);
+                }
             }
+        } catch (NumberFormatException e) {
+            System.err.println("Error al parsear la duración del cronómetro. Se guardará 0. Detalle: " + e.getMessage());
+            duracionTotalSegundos = 0;
         }
-    } catch (NumberFormatException e) {
-        System.err.println("Error al parsear la duración del cronómetro. Se guardará 0. Detalle: " + e.getMessage());
-        duracionTotalSegundos = 0; 
-    }
-    
+        
         nuevaLlamada.setDuracion(duracionTotalSegundos);
         
+      
         nuevaLlamada.setFecha_hora(LocalDateTime.now());
         
-        llamadas ll = new llamadas(); 
         
+llamadas ll = new llamadas();
         boolean guardadoExitoso = ll.GuardarLLamada(nuevaLlamada);
 
         if (guardadoExitoso) {
@@ -310,16 +311,12 @@ if (indiceGuion > 0) {
             limpiarFormulario();
         }
         
-        
-    } catch (NumberFormatException e) {
-
-        System.out.println("Error de formato numérico: " + e.getMessage());
-        JOptionPane.showMessageDialog(this,
-            "Error: Asegúrese de que todos los códigos y la duración sean números válidos.",
-            "Error de Formato",
-            JOptionPane.ERROR_MESSAGE);
+    } catch (NumberFormatException | NullPointerException e) {
+        // Mejor manejo de errores para saber qué falló
+        String mensajeError = "Error en la selección o formato de datos. Asegúrese de seleccionar un Cliente y un Empleado válidos. Detalle: " + e.getMessage();
+        System.out.println(mensajeError);
+        JOptionPane.showMessageDialog(this, mensajeError, "Error al Guardar", JOptionPane.ERROR_MESSAGE);
     } catch (Exception ex) {
-
         System.out.println("Error al guardar llamada: " + ex.getMessage());
         JOptionPane.showMessageDialog(this,
             "Error al guardar la llamada: " + ex.getMessage(),

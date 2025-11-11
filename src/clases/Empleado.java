@@ -109,7 +109,7 @@ public class Empleado extends Persona {
     // ======== Mostrar nombre completo en ComboBox ========
     @Override
     public String toString() {
-        return getNombre() + " " + getApellido();
+        return codigoEmpleado + " - " + getNombre();
     }
 
     // ======== Llenar ComboBox con empleados ========

@@ -24,70 +24,54 @@ public class llamadas {
     private int duracion;
     private LocalDateTime fecha_hora;
     
+    //getters y setters
+    
     
     public int getCodigo_cliente() {
         return codigo_cliente;
     }
 
-    /**
-     * @param codigo_cliente the codigo_cliente to set
-     */
+
     public void setCodigo_cliente(int codigo_cliente) {
         this.codigo_cliente = codigo_cliente;
     }
 
-    /**
-     * @return the nombre_cliente
-     */
+
     public String getNombre_cliente() {
         return nombre_cliente;
     }
 
-    /**
-     * @param nombre_cliente the nombre_cliente to set
-     */
+
     public void setNombre_cliente(String nombre_cliente) {
         this.nombre_cliente = nombre_cliente;
     }
 
-    /**
-     * @return the codigo_empleado
-     */
+
     public int getCodigo_empleado() {
         return codigo_empleado;
     }
 
-    /**
-     * @param codigo_empleado the codigo_empleado to set
-     */
+
     public void setCodigo_empleado(int codigo_empleado) {
         this.codigo_empleado = codigo_empleado;
     }
 
-    /**
-     * @return the tipo
-     */
+    
     public String getTipo() {
         return tipo;
     }
 
-    /**
-     * @param tipo the tipo to set
-     */
+
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
-    /**
-     * @return the nota
-     */
+
     public String getNota() {
         return nota;
     }
 
-    /**
-     * @param nota the nota to set
-     */
+
     public void setNota(String nota) {
         this.nota = nota;
     }
@@ -96,9 +80,7 @@ public class llamadas {
         return duracion;
     }
 
-    /**
-     * @param duracion the duracion to set
-     */
+
     public void setDuracion(int duracion) {
         this.duracion = duracion;
     }
@@ -107,9 +89,7 @@ public class llamadas {
         return fecha_hora;
     }
 
-    /**
-     * @param fecha_hora the fecha_hora to set
-     */
+
     public void setFecha_hora(LocalDateTime fecha_hora) {
         this.fecha_hora = fecha_hora;
     }
