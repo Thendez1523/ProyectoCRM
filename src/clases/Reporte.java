@@ -10,19 +10,28 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.Arrays;
 
 public class Reporte{
     
     private int codigoCliente;
     private int llamada; 
     private String resolucion;
-    private int telefono;
     private int codigoProductoServicio;
     private String tipo;
     private String nombreCliente;
-    private String nombreProductoServicio;
     private String motivo;
+    private String telefono;
+    private String nombreProductoServicio;
+    private int codigo;
     
+    public int getCodigo() {
+    return codigo;
+}
+
+public void setCodigo(int codigo) {
+    this.codigo = codigo;
+}
 
     public int getLlamada() {
         return llamada;
@@ -46,14 +55,6 @@ public class Reporte{
 
     public void setCodigoCliente(int codigoCliente) {
         this.codigoCliente = codigoCliente;
-    }
-
-    public int getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
     }
 
     public int getCodigoProductoServicio() {
@@ -80,14 +81,21 @@ public class Reporte{
         this.nombreCliente = nombreCliente;
     }
 
+    public String getTelefono() {
+    return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+    this.telefono = telefono;
+    }
+
     public String getNombreProductoServicio() {
-        return nombreProductoServicio;
+    return nombreProductoServicio;
     }
 
     public void setNombreProductoServicio(String nombreProductoServicio) {
-        this.nombreProductoServicio = nombreProductoServicio;
+    this.nombreProductoServicio = nombreProductoServicio;
     }
-
     public String getMotivo() {
         return motivo;
     }
@@ -96,105 +104,176 @@ public class Reporte{
         this.motivo = motivo;
     }
     
+    public void setCodigoProductoServicio(int codigoProductoServicio) {
+    this.codigoProductoServicio = codigoProductoServicio;
+}
+    
     public void CrearReportes(Reporte reportes) {
-    String mensaje = "¿Desea generar este Reporte?\n\n"
-            + "Código del Cliente: " + reportes.getCodigoCliente() + "\n"
-            + "Tipo: " + reportes.getTipo() + "\n"
-            + "Nombre del Cliente: " + reportes.getNombreCliente() + "\n"
-            + "Teléfono: " + reportes.getTelefono() + "\n"
-            + "Código del Producto o Servicio: " + reportes.getCodigoProductoServicio() + "\n"
-            + "Nombre del Producto o Servicio: " + reportes.getNombreProductoServicio() + "\n"
-            + "Motivo del Reporte: " + reportes.getMotivo() + "\n";
+            String mensaje = "¿Desea generar este Reporte?\n\n"
+        + "Código Llamada: " + reportes.getLlamada() + "\n"
+        + "Código Cliente: " + reportes.getCodigoCliente() + "\n"
+        + "Tipo: " + reportes.getTipo() + "\n"
+        + "Nombre Cliente: " + reportes.getNombreCliente() + "\n"
+        + "Teléfono: " + reportes.getTelefono() + "\n"
+        + "Código Producto: " + reportes.getCodigoProductoServicio() + "\n"
+        + "Nombre Producto: " + reportes.getNombreProductoServicio() + "\n"
+        + "Motivo: " + reportes.getMotivo() + "\n"
+        + "Resolución: " + reportes.getResolucion() + "\n";
 
     int opcion = JOptionPane.showConfirmDialog(
             null,
             mensaje,
-            "Confirmar creacion de Producto",
+            "Confirmar creación de Reporte",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE
     );
 
     if (opcion == JOptionPane.YES_OPTION) {
-        String sql = "INSERT INTO Producto (codigoCliente, tipo, nombreCliente, telefono, codigoProductoServicio, nombreProductoServicio) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // CORREGIDO: usa "cliente" que es el nombre real de tu columna
+        String sql = "INSERT INTO reporte (llamada, cliente, tipo, productoServicio, motivo, resolucion, nombreCliente, telefono, fecha, estado) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
 
         try (Connection cx = ConexionBD.getInstancia().conectar();
              PreparedStatement ps = cx.prepareStatement(sql)) {
 
-            ps.setInt(1, reportes.getCodigoCliente());
-            ps.setString(2, reportes.getTipo());
-            ps.setString(3, reportes.getNombreCliente());
-            ps.setInt(4, reportes.getTelefono());
-            ps.setInt(5, reportes.getCodigoProductoServicio());
-            ps.setString(6, reportes.getNombreProductoServicio());
-            ps.setString(7, reportes.getMotivo());
-           
+            ps.setInt(1, reportes.getLlamada());           // llamada
+            ps.setInt(2, reportes.getCodigoCliente());     // cliente
+            ps.setString(3, reportes.getTipo());           // tipo
+            ps.setInt(4, reportes.getCodigoProductoServicio()); // productoServicio
+            ps.setString(5, reportes.getMotivo());         // motivo
+            ps.setString(6, reportes.getResolucion());     // resolucion
+            ps.setString(7, reportes.getNombreCliente());  // nombreCliente
+            ps.setString(8, reportes.getTelefono());       // telefono
+            ps.setString(9, "Activo");                     // estado
 
             ps.executeUpdate();
 
-                //Solo este mensaje se muestra
-                JOptionPane.showMessageDialog(null, 
-                    "✅ Producto creado con éxito.\n",
-                    "Información",
-                    JOptionPane.INFORMATION_MESSAGE);
-           
+            JOptionPane.showMessageDialog(null, "✅ Reporte creado con éxito.");
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "❌ Error al crear producto: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "❌ Error al crear reporte: " + ex.getMessage());
+            ex.printStackTrace();
         }
     } else {
         JOptionPane.showMessageDialog(null, "❌ Creación cancelada por el usuario.");
-}
+    }
 }
 
     public void setVisible(boolean b) {
         throw new UnsupportedOperationException("Not supported yet.");
 
     }
-    
-      
+   
  
         public DefaultTableModel TablaReportes() {
-    String[] nombresColumnas = {"Código del Cliente", "Llamada", "Nombre del Cliente", "Tipo", "Producto o Servicio", "Motivo", "Resolución", "Fecha", "Estado"};
+            String[] nombresColumnas = {"Código", "Llamada", "Cliente", "Tipo", "Nombre Cliente", "Teléfono", "Producto/Servicio", "Motivo", "Resolución", "Fecha", "Estado"};
     DefaultTableModel modelo = new DefaultTableModel(null, nombresColumnas);
 
-    String sql = "SELECT codigo, llamada, diente, tipo, productoServicio, motivo, resolution, fecha, estado FROM reporte";
+   
+    String sql = "SELECT codigo, llamada, cliente, tipo, productoServicio, motivo, resolucion, fecha, estado, nombreCliente, telefono FROM reporte";
 
     try (Connection cx = ConexionBD.getInstancia().conectar(); 
          PreparedStatement ps = cx.prepareStatement(sql); 
          ResultSet rs = ps.executeQuery()) {
 
-        System.out.println("Conexión establecida: " + (cx != null));
-        System.out.println("Ejecutando consulta: " + sql);
+        System.out.println("🔍 EJECUTANDO CONSULTA: " + sql);
 
         while (rs.next()) {
-            Object[] fila = new Object[9];
+            Object[] fila = new Object[11];
 
             fila[0] = rs.getInt("codigo");
             fila[1] = rs.getInt("llamada");
-            fila[2] = rs.getString("diente");
+            fila[2] = rs.getInt("cliente");        // cliente
             fila[3] = rs.getString("tipo");
-            fila[4] = rs.getInt("productoServicio");
-            fila[5] = rs.getString("motivo");
-            fila[6] = rs.getString("resolution");
-            fila[7] = rs.getString("fecha");
-            fila[8] = rs.getString("estado");
+            fila[4] = rs.getString("nombreCliente");
+            fila[5] = rs.getString("telefono");
+            fila[6] = rs.getInt("productoServicio"); // productoServicio
+            fila[7] = rs.getString("motivo");
+            fila[8] = rs.getString("resolucion");
+            fila[9] = rs.getString("fecha");
+            fila[10] = rs.getString("estado");
 
             modelo.addRow(fila);
-            System.out.println("Reporte agregado: " + fila[0]); // imprime el código del reporte
+            System.out.println("✅ FILA AGREGADA: " + Arrays.toString(fila));
         }
 
     } catch (SQLException e) {
-        System.err.println("Error al cargar la tabla de reportes");
-        System.err.println("Mensaje: " + e.getMessage());
+        System.err.println("❌ Error al cargar la tabla de reportes: " + e.getMessage());
         e.printStackTrace();
         return new DefaultTableModel(null, nombresColumnas);
     }
 
     return modelo;
 }
+
+        
+public boolean eliminarReporte(int codigo) {
+    String sql = "DELETE FROM reporte WHERE codigo = ?"; // CORREGIDO: "reporte" no "producto"
+    
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql)) {
+        
+        ps.setInt(1, codigo);
+        int filasAfectadas = ps.executeUpdate();
+        
+        if (filasAfectadas > 0) {
+            JOptionPane.showMessageDialog(null, 
+                "✅ Reporte eliminado correctamente.",
+                "Eliminación Exitosa", 
+                JOptionPane.INFORMATION_MESSAGE);
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                "❌ No se encontró ningún Reporte con ese código.",
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, 
+            "❌ Error al eliminar Reporte: " + ex.getMessage(),
+            "Error de Base de Datos", 
+            JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+        return false;
+        }
+    }
+    
+    public boolean actualizarEstadoReporte(int codigoReporte, String nuevoEstado) {
+    String sql = "UPDATE reporte SET estado = ? WHERE codigo = ?";
+    
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql)) {
+        
+        ps.setString(1, nuevoEstado);
+        ps.setInt(2, codigoReporte);
+        
+        int filasAfectadas = ps.executeUpdate();
+        return filasAfectadas > 0;
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error al actualizar estado: " + e.getMessage());
+        return false;
+    }
+    
+}
+    
+@Override
+public String toString() {
+    return codigo + " - " + nombreCliente;
+}
+
+ }      
+        
+        
+       
+        
   
         
       
         
-}
+
+    
+    
+    

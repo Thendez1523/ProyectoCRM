@@ -1,7 +1,9 @@
 package formularios;
 
 import clases.Reporte;
+import clases.ServicioProducto;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 public class VisualizarReportes extends javax.swing.JFrame {
 
@@ -10,15 +12,15 @@ public VisualizarReportes() {
         cargarTablaReportes();
     }
     
-    private void cargarTablaReportes() {
-        try {
-        Reporte tabla = new Reporte(); 
-        DefaultTableModel modelo = tabla.TablaReportes();
+private void cargarTablaReportes() {
+    try {
+        Reporte reporte = new Reporte();
+        DefaultTableModel modelo = reporte.TablaReportes();
+        
         jTableReporte.setModel(modelo);
         
     } catch (Exception e) {
-        System.err.println("Error al cargar reportes: " + e.getMessage());
-        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "❌ Error al cargar reportes: " + e.getMessage());
     }
 }
 
@@ -30,6 +32,7 @@ public VisualizarReportes() {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableReporte = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         jInternalFrame1.setVisible(true);
 
@@ -45,7 +48,6 @@ public VisualizarReportes() {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Visualizar Reportes Iniciados");
 
         jLabel1.setText("Visualizar Reportes Iniciado");
 
@@ -62,35 +64,82 @@ public VisualizarReportes() {
         ));
         jScrollPane1.setViewportView(jTableReporte);
 
+        jButton1.setText("Eliminar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(362, 362, 362)
-                .addComponent(jLabel1)
-                .addContainerGap(347, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addGap(37, 37, 37))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(362, 362, 362)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(382, 382, 382)
+                                .addComponent(jButton1)))
+                        .addGap(0, 341, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addGap(57, 57, 57)
+                .addGap(53, 53, 53)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addGap(44, 44, 44)
+                .addComponent(jButton1)
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+            int filaSeleccionada = jTableReporte.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, 
+            "⚠️ Selecciona un reporte de la tabla para eliminar",
+            "Advertencia", 
+            JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    // Obtener el código del reporte de la primera columna
+    int codigoReporte = (int) jTableReporte.getValueAt(filaSeleccionada, 0);
+    String nombreCliente = (String) jTableReporte.getValueAt(filaSeleccionada, 4);
+    
+    // Confirmar eliminación
+    int confirmacion = JOptionPane.showConfirmDialog(this,
+        "¿Estás seguro de eliminar el reporte #" + codigoReporte + " del cliente " + nombreCliente + "?",
+        "Confirmar Eliminación",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE);
+    
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        Reporte reporte = new Reporte();
+        boolean eliminado = reporte.eliminarReporte(codigoReporte);
+        
+        if (eliminado) {
+            // Actualizar la tabla después de eliminar
+            cargarTablaReportes();
+        }
+      }  
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+ 
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -123,6 +172,7 @@ public VisualizarReportes() {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

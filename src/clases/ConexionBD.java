@@ -14,7 +14,7 @@ public class ConexionBD {
     private final String bd = "crm";
     private final String url = "jdbc:mysql://localhost:3306/";
     private final String user = "root";
-    private final String password = "root";
+    private final String password = "umg25";
     private final String driver = "com.mysql.cj.jdbc.Driver";
     private final int MAX_INTENTOS = 3;
 

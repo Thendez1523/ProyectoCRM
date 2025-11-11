@@ -14,7 +14,14 @@ public class ProductoServicio extends javax.swing.JFrame {
      */
     public ProductoServicio() {
         initComponents();
-    }
+                jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jComboBox1ActionPerformed(evt);
+        }
+    });
+    // Llamar al método una vez para establecer el estado inicial
+    actualizarEstadoCampoStock();
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,7 +48,6 @@ public class ProductoServicio extends javax.swing.JFrame {
         jTextField6 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Registrar Producto O Servicio");
 
         jLabel1.setText("Registrar Nuevo Producto o Servicio");
 
@@ -52,6 +58,11 @@ public class ProductoServicio extends javax.swing.JFrame {
         jLabel2.setText("Categoría:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Producto", "Servicio" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Costo");
 
@@ -139,29 +150,87 @@ public class ProductoServicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+        // Validar campos obligatorios
+        if (jTextField2.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo Nombre es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (jTextField5.getText().trim().isEmpty() || jTextField4.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Los campos Costo y Precio son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-    try {
         ServicioProducto nuevoProducto = new ServicioProducto();
 
-        nuevoProducto.setNombre(jTextField2.getText());
-        nuevoProducto.setDescripcion(jTextField3.getText());
-        nuevoProducto.setCosto(Double.parseDouble(jTextField5.getText()));
-        nuevoProducto.setPrecio(Double.parseDouble(jTextField4.getText()));
-        nuevoProducto.setStock(Integer.parseInt(jTextField6.getText()));
+        nuevoProducto.setNombreProducto(jTextField2.getText().trim());
+        nuevoProducto.setDescripcion(jTextField3.getText().trim());
+        nuevoProducto.setCosto(Double.parseDouble(jTextField5.getText().trim()));
+        nuevoProducto.setPrecio(Double.parseDouble(jTextField4.getText().trim()));
+        
+        // Manejar el stock según la categoría
+        String categoria = jComboBox1.getSelectedItem().toString();
+        if ("Servicio".equals(categoria)) {
+            nuevoProducto.setStock(0); // Los servicios siempre tienen stock 0
+        } else {
+            // Para productos, validar que el stock no esté vacío
+            if (jTextField6.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El campo Stock es obligatorio para Productos", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            nuevoProducto.setStock(Integer.parseInt(jTextField6.getText().trim()));
+        }
+        
         nuevoProducto.setEstado("Activo");
-        nuevoProducto.setCategoria(jComboBox1.getSelectedItem().toString());
+        nuevoProducto.setCategoria(categoria);
 
         // Guardar producto
         nuevoProducto.CrearProducto(nuevoProducto);
+        
+        // Limpiar campos después de guardar
+        limpiarCampos();
 
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, 
+            "Error en los campos numéricos: Asegúrate de ingresar números válidos",
+            "Error de formato", 
+            JOptionPane.ERROR_MESSAGE);
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, 
             "Error al guardar: " + ex.getMessage(),
             "Error", 
             JOptionPane.ERROR_MESSAGE);
     }
+}
 
+private void limpiarCampos() {
+    jTextField2.setText("");
+    jTextField3.setText("");
+    jTextField5.setText("");
+    jTextField4.setText("");
+    jTextField6.setText("");
+    jComboBox1.setSelectedIndex(0); // Volver a "Producto"
+    jTextField2.requestFocus(); // Poner foco en el primer campo
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+            actualizarEstadoCampoStock();
+            }
+    
+        private void actualizarEstadoCampoStock() {
+    String categoria = jComboBox1.getSelectedItem().toString();
+    if ("Servicio".equals(categoria)) {
+        // Si es Servicio, deshabilitar y limpiar el campo Stock
+        jTextField6.setEnabled(false);
+        jTextField6.setText("0"); // Los servicios no tienen stock
+        jTextField6.setBackground(new java.awt.Color(240, 240, 240)); // Color de fondo gris claro
+    } else {
+        // Si es Producto, habilitar el campo Stock
+        jTextField6.setEnabled(true);
+        jTextField6.setBackground(java.awt.Color.WHITE); // Color de fondo normal
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments

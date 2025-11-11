@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
-
 import java.util.Date;
 import java.time.LocalDateTime;
 import javax.swing.table.DefaultTableModel;
@@ -136,6 +135,86 @@ try (Connection cx = ConexionBD.getInstancia().conectar();
     } else {
         JOptionPane.showMessageDialog(null, "Registro cancelado.");
     }
+}
+    
+        //metodo para mi clase reportes
+public static class LlamadaComboItem {
+    private int codigoLlamada;
+    private int codigoCliente;
+    private String nombreCliente;
+    private String tipo;
+    
+    public LlamadaComboItem(int codigoLlamada, int codigoCliente, String nombreCliente, String tipo) {
+        this.codigoLlamada = codigoLlamada;
+        this.codigoCliente = codigoCliente;
+        this.nombreCliente = nombreCliente;
+        this.tipo = tipo;
+    }
+    
+    
+    public int getCodigoLlamada() { return codigoLlamada; }
+    public int getCodigoCliente() { return codigoCliente; }
+    public String getNombreCliente() { return nombreCliente; }
+    public String getTipo() { return tipo; }
+    
+    @Override
+    public String toString() {
+        return String.format("Llamada #%d - %s - %s", codigoLlamada, nombreCliente, tipo);
+    }
+}
+    
+    public static DefaultComboBoxModel<String> getModeloLlamadasParaComboBox() {
+    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+    String sql = "SELECT l.codigoLlamada, l.cliente, l.tipo, c.nombre as nombreCliente " +
+                 "FROM llamada l " +
+                 "LEFT JOIN cliente c ON l.cliente = c.codigoCliente " +
+                 "ORDER BY l.codigoLlamada DESC";
+
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            String item = "Llamada #" + rs.getInt("codigoLlamada") + " - " + 
+                         rs.getString("nombreCliente") + " - " + 
+                         rs.getString("tipo");
+            model.addElement(item);
+        }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "❌ Error al cargar llamadas: " + e.getMessage());
+    }
+    return model;
+}
+    
+    public static void llenarComboLlamadas(javax.swing.JComboBox<llamadas> comboBox) {
+    javax.swing.DefaultComboBoxModel<llamadas> model = new javax.swing.DefaultComboBoxModel<>();
+    String sql = "SELECT l.codigoLlamada, l.cliente, l.tipo, c.nombre as nombreCliente " +
+                 "FROM llamada l " +
+                 "LEFT JOIN cliente c ON l.cliente = c.codigoCliente " +
+                 "ORDER BY l.codigoLlamada DESC";
+
+    try (Connection cx = ConexionBD.getInstancia().conectar();
+         PreparedStatement ps = cx.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            llamadas llamada = new llamadas();
+            llamada.setCodigo_cliente(rs.getInt("cliente"));
+            llamada.setNombre_cliente(rs.getString("nombreCliente"));
+            llamada.setTipo(rs.getString("tipo"));
+            model.addElement(llamada);
+        }
+        comboBox.setModel(model);
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "❌ Error al cargar llamadas: " + e.getMessage());
+    }
+}
+
+@Override
+public String toString() {
+    return String.valueOf(this.getCodigo_cliente()); // Muestra solo: "1", "2", "3"
 }
     
     //metodo donde se encuentra mi tabla y mi select

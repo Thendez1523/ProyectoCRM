@@ -14,7 +14,6 @@ public class ActualizarProductoServicio extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -37,13 +36,6 @@ public class ActualizarProductoServicio extends javax.swing.JFrame {
         setTitle("Registrar Nuevo Producto o Servicio");
 
         jLabel1.setText("Actualizar Producto o Servicio");
-
-        jButton1.setText("Eliminar Producto");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("Nombre:");
 
@@ -106,11 +98,6 @@ public class ActualizarProductoServicio extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(158, 158, 158)
-                                .addComponent(jButton1)
-                                .addGap(102, 102, 102)
-                                .addComponent(jButton2))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(185, 185, 185)
                                 .addComponent(jLabel1))
                             .addGroup(layout.createSequentialGroup()
@@ -121,6 +108,10 @@ public class ActualizarProductoServicio extends javax.swing.JFrame {
                                     .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(246, 246, 246)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,9 +151,7 @@ public class ActualizarProductoServicio extends javax.swing.JFrame {
                     .addComponent(jFormattedTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                .addComponent(jButton2)
                 .addGap(25, 25, 25))
         );
 
@@ -170,26 +159,80 @@ public class ActualizarProductoServicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-           
-        try {
-        // Crear objeto de tu clase ServicioProducto
+            try {
+        // 1️⃣ Validar que el código esté lleno
+        String codigoTexto = jFormattedTextField3.getText().trim();
+        if (codigoTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "⚠️ Debes ingresar el Código del Producto o Servicio");
+            return;
+        }
+
+        int codigo = Integer.parseInt(codigoTexto);
+
+        // 2️⃣ Verificar si al menos un campo adicional está lleno
+        boolean algunCampoLleno = false;
+
+        if (!jTextField2.getText().trim().isEmpty()) algunCampoLleno = true; // nombre
+        if (!jTextField3.getText().trim().isEmpty()) algunCampoLleno = true; // descripción
+        if (!jFormattedTextField1.getText().trim().isEmpty()) algunCampoLleno = true; // costo
+        if (!jFormattedTextField2.getText().trim().isEmpty()) algunCampoLleno = true; // precio
+        if (!jFormattedTextField4.getText().trim().isEmpty()) algunCampoLleno = true; // stock
+
+        // 3️⃣ Si ningún otro campo está lleno, mostrar advertencia
+        if (!algunCampoLleno) {
+            JOptionPane.showMessageDialog(null, 
+                "⚠️ Debes llenar al menos un campo adicional aparte del código (por ejemplo, nombre, descripción, precio, etc.)");
+            return;
+        }
+
+        // 4️⃣ Crear el objeto del producto o servicio
         ServicioProducto producto = new ServicioProducto();
+        producto.setCodigoProducto(codigo);
 
-        // Obtener los valores desde los componentes del JFrame
-        producto.setCodigoProducto(Integer.parseInt(jFormattedTextField3.getText()));
-        producto.setNombre(jTextField2.getText());
-        producto.setDescripcion(jTextField3.getText());
-        producto.setCategoria(jComboBox3.getSelectedItem().toString()); 
-        producto.setEstado(jComboBox2.getSelectedItem().toString()); 
-        producto.setCosto(Double.parseDouble(jFormattedTextField1.getText()));
-        producto.setPrecio(Double.parseDouble(jFormattedTextField2.getText()));
-        producto.setStock(Integer.parseInt(jFormattedTextField4.getText()));
+        // Solo llenar los campos que tengan valor
+        String nombre = jTextField2.getText().trim();
+        if (!nombre.isEmpty()) {
+            producto.setNombreProducto(nombre);
+        } else {
+            producto.setNombreProducto(""); // Vacío indica "no cambiar"
+        }
 
-        // Crear instancia de la clase donde está el método Actualizar
+        String descripcion = jTextField3.getText().trim();
+        if (!descripcion.isEmpty()) {
+            producto.setDescripcion(descripcion);
+        } else {
+            producto.setDescripcion("");
+        }
+
+        // Para campos de selección, siempre se envían
+        producto.setCategoria(jComboBox3.getSelectedItem().toString());
+        producto.setEstado(jComboBox2.getSelectedItem().toString());
+
+        // Manejar campos numéricos - usar -1 para "no cambiar"
+        String costoTexto = jFormattedTextField1.getText().trim();
+        if (!costoTexto.isEmpty()) {
+            producto.setCosto(Double.parseDouble(costoTexto));
+        } else {
+            producto.setCosto(-1); // -1 indica "no actualizar"
+        }
+
+        String precioTexto = jFormattedTextField2.getText().trim();
+        if (!precioTexto.isEmpty()) {
+            producto.setPrecio(Double.parseDouble(precioTexto));
+        } else {
+            producto.setPrecio(-1);
+        }
+
+        String stockTexto = jFormattedTextField4.getText().trim();
+        if (!stockTexto.isEmpty()) {
+            producto.setStock(Integer.parseInt(stockTexto));
+        } else {
+            producto.setStock(-1);
+        }
+
+        // 5️⃣ Llamar el método de actualización SELECTIVO
         ServicioProducto servicio = new ServicioProducto();
-        servicio.ActualizarProductoServicio(producto);
-
-        // Refrescar tabla (si la tienes en el mismo JFrame)
+        servicio.ActualizarProductoServicioSelectivo(producto);
 
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "⚠️ Verifica los campos numéricos (Código, Costo, Precio, Stock)");
@@ -200,11 +243,6 @@ public class ActualizarProductoServicio extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        EliminarProductoServicio eps= new EliminarProductoServicio();
-        eps.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -214,7 +252,6 @@ public class ActualizarProductoServicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;

@@ -252,7 +252,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenu3.add(jMenuItem1);
 
         jMenuItemVisualizarProductoServicio.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        jMenuItemVisualizarProductoServicio.setText("Visualizar Productos y Servicios");
+        jMenuItemVisualizarProductoServicio.setText("Visualizar o Eliminar Productos y Servicios");
         jMenuItemVisualizarProductoServicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemVisualizarProductoServicioActionPerformed(evt);
@@ -274,7 +274,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenu5.add(jMenuItemCrearReporte);
 
         jMenuItemEstadoReporte.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        jMenuItemEstadoReporte.setText("Estado Reporte");
+        jMenuItemEstadoReporte.setText("Actualizar Reporte");
         jMenuItemEstadoReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemEstadoReporteActionPerformed(evt);
@@ -283,7 +283,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jMenu5.add(jMenuItemEstadoReporte);
 
         jMenuItemVisualizarReporte.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        jMenuItemVisualizarReporte.setText("Visualizar Reporte");
+        jMenuItemVisualizarReporte.setText("Visualizar o Editar Reporte");
         jMenuItemVisualizarReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemVisualizarReporteActionPerformed(evt);
@@ -363,9 +363,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void jMenuItemIniciarLLamadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemIniciarLLamadaActionPerformed
 
-       Llamadas l= new Llamadas();
-        l.setVisible(true); 
-        
     }//GEN-LAST:event_jMenuItemIniciarLLamadaActionPerformed
 
     private void jMenuItemHistorialLlamadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemHistorialLlamadasActionPerformed
@@ -430,10 +427,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemVisualizarEmpleadosActionPerformed
 
     private void jMenuItemAgregarProductoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarProductoServicioActionPerformed
-
         ProductoServicio ps= new ProductoServicio();
         ps.setVisible(true);
-        
     }//GEN-LAST:event_jMenuItemAgregarProductoServicioActionPerformed
 
     private void jMenuItemContratarServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemContratarServicioActionPerformed
@@ -454,24 +449,28 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemVisualizarServiciosVigentesActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
+        ActualizarProductoServicio aps= new ActualizarProductoServicio();
+        aps.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItemVisualizarProductoServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVisualizarProductoServicioActionPerformed
-
-        
+        VisualizarProductosServicios vsv= new VisualizarProductosServicios();
+        vsv.setVisible(true);
     }//GEN-LAST:event_jMenuItemVisualizarProductoServicioActionPerformed
 
     private void jMenuItemCrearReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCrearReporteActionPerformed
-       
+        Reportes rps = new Reportes();
+        rps.setVisible(true);
     }//GEN-LAST:event_jMenuItemCrearReporteActionPerformed
 
     private void jMenuItemEstadoReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEstadoReporteActionPerformed
-       
+       EstadoReporte etrp = new EstadoReporte();
+       etrp.setVisible(true);
     }//GEN-LAST:event_jMenuItemEstadoReporteActionPerformed
 
     private void jMenuItemVisualizarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVisualizarReporteActionPerformed
-        
+       VisualizarReportes vsrp = new VisualizarReportes();
+        vsrp.setVisible(true);
     }//GEN-LAST:event_jMenuItemVisualizarReporteActionPerformed
 
     private void jMenuItemAgregarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarCategoriaActionPerformed
